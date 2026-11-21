@@ -5,11 +5,18 @@ import { db } from "@/lib/db";
 import { getDict } from "@/lib/i18n";
 import { busSeatsLeft, newReference, todayISO, tourSpotsLeft } from "@/lib/booking";
 
-export type BookingState = { error?: string };
+export type BookingState = { error?: string; values?: Record<string, string> };
 
 const str = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 
-export async function createBooking(_: BookingState, fd: FormData): Promise<BookingState> {
+export async function createBooking(prev: BookingState, fd: FormData): Promise<BookingState> {
+  const res = await create(fd);
+  // On renvoie ce que le client a saisi pour ne pas vider le formulaire en cas d'erreur
+  const values = Object.fromEntries([...fd.entries()].filter(([k, v]) => typeof v === "string" && !k.startsWith("$")).map(([k, v]) => [k, String(v)]));
+  return { ...res, values };
+}
+
+async function create(fd: FormData): Promise<BookingState> {
   const locale = str(fd, "locale");
   const e = getDict(locale).book.errors;
 

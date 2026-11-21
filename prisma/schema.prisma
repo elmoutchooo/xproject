@@ -77,5 +77,24 @@ model Booking {
   transferId String?
   tour       Tour?     @relation(fields: [tourId], references: [id])
   tourId     String?
+  driver     Driver?   @relation(fields: [driverId], references: [id])
+  driverId   String?
+  // Commission de l'agence, calculée quand le trajet est terminé (taux du chauffeur à ce moment-là)
+  commission Int?
+  completedAt DateTime?
+  // true quand l'agence et le chauffeur ont fait les comptes pour ce trajet
+  settled    Boolean   @default(false)
   createdAt  DateTime  @default(now())
+}
+
+model Driver {
+  id             String    @id @default(cuid())
+  name           String
+  phone          String    @unique // identifiant de connexion (chiffres uniquement)
+  passwordHash   String
+  vehicle        String?   // ex. "Mercedes Vito – 12345-A-7"
+  commissionRate Int       @default(10) // % pris par l'agence sur chaque trajet
+  active         Boolean   @default(true)
+  bookings       Booking[]
+  createdAt      DateTime  @default(now())
 }

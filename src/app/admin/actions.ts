@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { completeBooking } from "@/lib/commission";
+import { hashPassword, normalizePhone } from "@/lib/password";
 import { createSessionToken, SESSION_COOKIE, sessionMaxAge, verifySessionToken } from "@/lib/session";
 
 async function requireAdmin() {
@@ -34,10 +36,64 @@ export async function updateBooking(fd: FormData) {
   const id = s(fd, "id");
   const data: { status?: string; paid?: boolean } = {};
   const status = s(fd, "status");
-  if (["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"].includes(status)) data.status = status;
+  if (status === "COMPLETED") await completeBooking(id);
+  else if (["PENDING", "CONFIRMED", "CANCELLED"].includes(status)) data.status = status;
   if (fd.has("paid")) data.paid = s(fd, "paid") === "true";
-  await db.booking.update({ where: { id }, data });
+  if (Object.keys(data).length) await db.booking.update({ where: { id }, data });
   revalidatePath("/admin", "layout");
+}
+
+export async function assignDriver(fd: FormData) {
+  await requireAdmin();
+  const driverId = s(fd, "driverId") || null;
+  const b = await db.booking.findUnique({ where: { id: s(fd, "id") } });
+  if (!b) return;
+  // Un trajet déjà terminé garde sa commission ; on la recalcule seulement si le chauffeur change
+  let commission = b.commission;
+  if (b.status === "COMPLETED" && driverId !== b.driverId) {
+    const d = driverId ? await db.driver.findUnique({ where: { id: driverId } }) : null;
+    commission = d ? Math.round((b.total * d.commissionRate) / 100) : null;
+  }
+  await db.booking.update({ where: { id: b.id }, data: { driverId, commission } });
+  revalidatePath("/admin", "layout");
+}
+
+// ---- Chauffeurs ----
+type DriverState = { error?: string; ok?: boolean; values?: Record<string, string> };
+
+export async function saveDriver(_: DriverState, fd: FormData): Promise<DriverState> {
+  const res = await saveDriverInner(fd);
+  if (res.ok) return res;
+  return { ...res, values: { name: s(fd, "name"), phone: s(fd, "phone"), vehicle: s(fd, "vehicle"), commissionRate: s(fd, "commissionRate"), active: fd.get("active") === "on" ? "on" : "" } };
+}
+
+async function saveDriverInner(fd: FormData): Promise<DriverState> {
+  await requireAdmin();
+  const id = s(fd, "id");
+  const phone = normalizePhone(s(fd, "phone"));
+  const password = s(fd, "password");
+  const rate = Math.min(100, n(fd, "commissionRate"));
+  if (!s(fd, "name") || phone.length < 8) return { error: "Nom et téléphone obligatoires." };
+  if (!id && password.length < 6) return { error: "Mot de passe : 6 caractères minimum." };
+  if (password && password.length < 6) return { error: "Mot de passe : 6 caractères minimum." };
+  const other = await db.driver.findUnique({ where: { phone } });
+  if (other && other.id !== id) return { error: "Ce numéro est déjà utilisé par un autre chauffeur." };
+
+  const data = {
+    name: s(fd, "name"), phone, vehicle: s(fd, "vehicle") || null, commissionRate: rate, active: fd.get("active") === "on",
+    ...(password ? { passwordHash: await hashPassword(password) } : {}),
+  };
+  if (id) await db.driver.update({ where: { id }, data });
+  else await db.driver.create({ data: { ...data, passwordHash: data.passwordHash! } });
+  revalidatePath("/admin/drivers", "layout");
+  return { ok: true };
+}
+
+/** Marque comme réglés tous les trajets terminés d'un chauffeur (comptes faits). */
+export async function settleDriver(fd: FormData) {
+  await requireAdmin();
+  await db.booking.updateMany({ where: { driverId: s(fd, "driverId"), status: "COMPLETED", settled: false }, data: { settled: true } });
+  revalidatePath("/admin/drivers", "layout");
 }
 
 // ---- Lignes de bus ----

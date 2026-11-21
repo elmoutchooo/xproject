@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
+import { DRIVER_COOKIE, readToken, SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
 const locales = ["en", "fr", "es", "it"];
 
@@ -11,6 +11,14 @@ export async function middleware(req: NextRequest) {
     if (pathname === "/admin/login") return NextResponse.next();
     const ok = await verifySessionToken(req.cookies.get(SESSION_COOKIE)?.value);
     if (!ok) return NextResponse.redirect(new URL("/admin/login", req.url));
+    return NextResponse.next();
+  }
+
+  // Espace chauffeurs
+  if (pathname.startsWith("/driver")) {
+    if (pathname === "/driver/login") return NextResponse.next();
+    const subject = await readToken(req.cookies.get(DRIVER_COOKIE)?.value);
+    if (!subject?.startsWith("driver:")) return NextResponse.redirect(new URL("/driver/login", req.url));
     return NextResponse.next();
   }
 

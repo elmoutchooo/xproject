@@ -7,6 +7,19 @@ Site de réservation pour une agence de transport au Maroc : **bus entre les vil
 - Gestion des places en temps réel (impossible de vendre deux fois la même place)
 - Le client retrouve ou annule sa réservation avec sa référence + email (annulation gratuite jusqu'à 24 h avant)
 - Dashboard admin en français sur `/admin`
+- Espace chauffeurs sur `/driver` (mobile) avec commission de l'agence sur chaque trajet
+
+## Chauffeurs et commissions
+
+1. Dans `/admin/drivers` (menu **Chauffeurs**), créez un compte pour chaque chauffeur : nom, téléphone, mot de passe et taux de commission (10 % par défaut).
+2. Dans **Réservations**, attribuez chaque trajet à un chauffeur.
+3. Le chauffeur se connecte sur `/driver` avec son téléphone et son mot de passe. Il voit ses trajets (client, adresse, vol, montant), peut appeler le client ou lui écrire sur WhatsApp, et appuie sur **Terminé** à la fin du trajet.
+4. La commission est calculée automatiquement quand le trajet est terminé :
+   - **Espèces** : le chauffeur a encaissé le client, il doit la commission à l'agence.
+   - **Virement** : l'agence a reçu l'argent, elle doit au chauffeur le montant moins la commission.
+5. La page du chauffeur dans l'admin affiche le solde. Une fois les comptes faits, cliquez sur **Marquer comme réglé**.
+
+Chauffeur de démonstration (données d'exemple) : téléphone `0611111111`, mot de passe `chauffeur123`.
 
 ## Démarrer
 
@@ -18,6 +31,9 @@ npm run dev               # http://localhost:3000
 ```
 
 Admin : http://localhost:3000/admin (mot de passe = `ADMIN_PASSWORD` dans `.env`).
+Chauffeurs : http://localhost:3000/driver
+
+Après une mise à jour du code (`git pull`), lancez `npm install` puis `npm run db:push` pour mettre la base de données à jour sans perdre vos réservations. Attention : `npm run setup` remet les données d'exemple et **efface** les réservations.
 
 ## À personnaliser
 

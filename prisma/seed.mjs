@@ -1,8 +1,10 @@
 // Données d'exemple : node prisma/seed.mjs
 import { PrismaClient } from "@prisma/client";
+import { randomBytes, scryptSync } from "node:crypto";
 
 const db = new PrismaClient();
 const j = (o) => JSON.stringify(o);
+const hash = (pw) => { const salt = randomBytes(16).toString("hex"); return `${salt}:${scryptSync(pw, salt, 64).toString("hex")}`; };
 
 const routes = [
   ["Marrakech", "Essaouira", "08:00", 180, 120],
@@ -126,6 +128,7 @@ const tours = [
 
 async function main() {
   await db.booking.deleteMany();
+  await db.driver.deleteMany();
   await db.busRoute.deleteMany();
   await db.transfer.deleteMany();
   await db.tour.deleteMany();
@@ -141,6 +144,8 @@ async function main() {
       data: { ...t, title: j(t.title), description: j(t.description), includes: j(t.includes) },
     });
   }
+  // Chauffeur de démonstration : téléphone 0611111111 / mot de passe chauffeur123
+  await db.driver.create({ data: { name: "Youssef Demo", phone: "0611111111", passwordHash: hash("chauffeur123"), vehicle: "Mercedes Vito", commissionRate: 10 } });
   console.log(`Seed OK: ${routes.length} lignes, ${transfers.length} transferts, ${tours.length} excursions`);
 }
 

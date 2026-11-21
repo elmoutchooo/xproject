@@ -5,6 +5,7 @@ import { AGENCY } from "@/config/agency";
 const links = [
   { href: "/admin", label: "Tableau de bord" },
   { href: "/admin/bookings", label: "Réservations" },
+  { href: "/admin/drivers", label: "Chauffeurs" },
   { href: "/admin/routes", label: "Lignes de bus" },
   { href: "/admin/transfers", label: "Transferts" },
   { href: "/admin/tours", label: "Excursions" },
@@ -22,6 +23,7 @@ export default function Shell({ title, children, action }: { title: string; chil
           {links.map((l) => (
             <Link key={l.href} href={l.href} className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">{l.label}</Link>
           ))}
+          <Link href="/driver" target="_blank" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Espace chauffeurs ↗</Link>
           <Link href="/fr" target="_blank" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Voir le site ↗</Link>
           <form action={logout}><button className="w-full shrink-0 rounded-lg px-3 py-2 text-left text-sm font-medium text-brand-300 hover:bg-white/10 hover:text-white">Déconnexion</button></form>
         </nav>
