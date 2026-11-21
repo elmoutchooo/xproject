@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Ligne de bus entre deux villes, avec un départ quotidien à heure fixe
+model BusRoute {
+  id          String    @id @default(cuid())
+  fromCity    String
+  toCity      String
+  departure   String    // "08:00"
+  durationMin Int
+  price       Int       // MAD par personne
+  seats       Int
+  active      Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+// Transfert aéroport : prix par véhicule
+model Transfer {
+  id          String    @id @default(cuid())
+  airport     String    // ex. "Marrakech Menara (RAK)"
+  destination String    // ex. "Marrakech – Médina"
+  vehicle     String    // CAR | VAN | MINIBUS
+  capacity    Int
+  price       Int       // MAD par véhicule
+  active      Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+// Excursion d'une journée ou navette touristique : prix par personne
+model Tour {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  category    String    // FULL_DAY | SHUTTLE
+  title       String    // JSON {"en":"","fr":"","es":"","it":""}
+  description String    // JSON
+  includes    String    // JSON, une ligne par élément
+  durationH   Int
+  departure   String    // "08:00"
+  fromCity    String
+  price       Int       // MAD par personne
+  maxPeople   Int
+  imageUrl    String?
+  active      Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+model Booking {
+  id         String    @id @default(cuid())
+  reference  String    @unique
+  type       String    // BUS | TRANSFER | TOUR
+  date       String    // "2026-12-01"
+  time       String?   // heure de prise en charge (transferts)
+  passengers Int
+  fullName   String
+  email      String
+  phone      String
+  pickup     String?
+  flight     String?
+  notes      String?
+  locale     String    @default("en")
+  payment    String    // CASH | BANK_TRANSFER
+  paid       Boolean   @default(false)
+  status     String    @default("PENDING") // PENDING | CONFIRMED | CANCELLED | COMPLETED
+  total      Int
+  busRoute   BusRoute? @relation(fields: [busRouteId], references: [id])
+  busRouteId String?
+  transfer   Transfer? @relation(fields: [transferId], references: [id])
+  transferId String?
+  tour       Tour?     @relation(fields: [tourId], references: [id])
+  tourId     String?
+  createdAt  DateTime  @default(now())
+}

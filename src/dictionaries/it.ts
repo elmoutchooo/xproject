@@ -1,0 +1,115 @@
+import type { Dict } from "@/lib/i18n";
+
+export const it: Dict = {
+  nav: { home: "Home", bus: "Autobus", transfers: "Transfer aeroporto", excursions: "Escursioni", myBooking: "La mia prenotazione", contact: "Contatti", bookNow: "Prenota" },
+  hero: {
+    badge: "Trasporto autorizzato in tutto il Marocco",
+    title: "Viaggia in Marocco comodamente, dall'aeroporto al deserto",
+    subtitle: "Autobus tra le città, transfer privati dall'aeroporto, navette turistiche ed escursioni di un giorno. Prenota in 2 minuti e paga in contanti o con bonifico.",
+  },
+  search: {
+    tabBus: "Autobus", tabTransfer: "Transfer aeroporto", tabTour: "Escursioni",
+    from: "Partenza", to: "Arrivo", date: "Data", passengers: "Passeggeri", search: "Cerca",
+    airport: "Aeroporto", any: "Tutti", category: "Tipo",
+  },
+  services: {
+    title: "I nostri servizi",
+    subtitle: "Un'unica agenzia per tutti i tuoi spostamenti in Marocco.",
+    bus: { t: "Autobus tra le città", d: "Partenze giornaliere tra Marrakech, Essaouira, Casablanca e Agadir." },
+    transfer: { t: "Transfer aeroporto", d: "Un autista privato ti aspetta agli arrivi con un cartello con il tuo nome." },
+    shuttle: { t: "Navette turistiche", d: "Navette condivise per l'Atlante, Imlil e Ouarzazate." },
+    tour: { t: "Escursioni di un giorno", d: "Essaouira, Ourika, Ouzoud, Agafay: andata e ritorno in giornata." },
+  },
+  why: {
+    title: "Perché viaggiare con noi",
+    items: [
+      { t: "Autisti professionisti", d: "Esperti, autorizzati e multilingue." },
+      { t: "Veicoli confortevoli", d: "Recenti, climatizzati e assicurati." },
+      { t: "Prezzi fissi", d: "Il prezzo che vedi è quello che paghi. Nessuna sorpresa." },
+      { t: "Assistenza 7 giorni su 7", d: "Scrivici su WhatsApp prima e durante il viaggio." },
+    ],
+  },
+  popular: { title: "Escursioni più richieste", viewAll: "Vedi tutte le escursioni" },
+  reviews: {
+    title: "Cosa dicono i nostri viaggiatori",
+    items: [
+      { n: "Sarah, Regno Unito", t: "Driver was waiting at the airport at 2am. Clean van, fair price. Highly recommended." },
+      { n: "Julien, Francia", t: "Excursion à Essaouira parfaite, chauffeur ponctuel et très sympa." },
+      { n: "Lucía, Spagna", t: "Todo muy bien organizado, reservamos el día antes sin problema." },
+    ],
+  },
+  cta: { title: "Pronto a partire?", text: "Prenota ora il tuo posto e ricevi la conferma via email.", button: "Prenota un viaggio" },
+  common: {
+    perPerson: "a persona", perVehicle: "a veicolo", from: "Da", hours: "h", min: "min",
+    seatsLeft: "posti liberi", spotsLeft: "posti liberi", soldOut: "Esaurito", book: "Prenota", details: "Dettagli",
+    back: "Indietro", noResults: "Nessun risultato per questa ricerca.", departure: "Partenza", arrival: "Arrivo",
+    duration: "Durata", price: "Prezzo", total: "Totale", people: "persone", upTo: "Fino a",
+    pickTime: "Partenza alle", fullDay: "Giornata intera", shuttle: "Navetta", includes: "Incluso",
+    vehicles: { CAR: "Auto", VAN: "Van", MINIBUS: "Minibus" },
+  },
+  bus: { title: "Autobus tra le città", subtitle: "Scegli tratta e data, poi prenota i tuoi posti.", allRoutes: "Tutte le tratte", daily: "Ogni giorno", routeTitle: "Autobus {from} – {to}", routeDesc: "Autobus giornaliero da {from} a {to}: partenza alle {time}, circa {duration}, da {price} a persona. Prenota online e paga in contanti o con bonifico.", otherRoutes: "Altre tratte", chooseDate: "Scegli la data del viaggio", seo: "Biglietti autobus in Marocco: Marrakech, Essaouira, Casablanca, Agadir" },
+  transfers: {
+    title: "Transfer aeroporto", subtitle: "Transfer privato dall'aeroporto al tuo hotel, a prezzo fisso per veicolo.",
+    steps: ["Prenota online con il numero del volo", "Il tuo autista ti aspetta agli arrivi con un cartello", "Rilassati, ti portiamo dritto in hotel"],
+    capacity: "passeggeri max",
+  },
+  excursions: { title: "Escursioni e navette", subtitle: "Escursioni di un giorno e navette condivise da Marrakech.", all: "Tutte", fullDay: "Escursioni di un giorno", shuttle: "Navette", meeting: "Partenza da" },
+  book: {
+    title: "Completa la prenotazione", summary: "Il tuo viaggio", details: "I tuoi dati",
+    fullName: "Nome e cognome", email: "Email", phone: "Telefono / WhatsApp", phoneHint: "Con prefisso, es. +39 333 000 0000",
+    date: "Data", time: "Orario di prelievo", passengers: "Passeggeri",
+    pickup: "Hotel / indirizzo di prelievo", pickupHint: "Nome del tuo hotel o riad", flight: "Numero di volo", flightHint: "es. AT800",
+    notes: "Note (facoltativo)", payment: "Metodo di pagamento",
+    payCash: "Contanti", payCashText: "Paga l'autista il giorno del viaggio.",
+    payTransfer: "Bonifico bancario", payTransferText: "Effettua il bonifico prima del viaggio. I dati bancari compaiono dopo la prenotazione.",
+    confirm: "Conferma prenotazione", accept: "Accetto i termini e le condizioni",
+    errors: {
+      required: "Compila tutti i campi obbligatori.", email: "Inserisci un'email valida.",
+      past: "Scegli una data da oggi in poi.", seats: "Posti insufficienti in questa data.",
+      capacity: "Troppi passeggeri per questo veicolo.", notFound: "Questo viaggio non è più disponibile.",
+    },
+  },
+  confirm: {
+    title: "Prenotazione ricevuta", thanks: "Grazie! Abbiamo ricevuto la tua prenotazione e la confermeremo a breve via WhatsApp o email.",
+    reference: "Codice di prenotazione", status: "Stato",
+    statuses: { PENDING: "In attesa di conferma", CONFIRMED: "Confermata", CANCELLED: "Annullata", COMPLETED: "Completata" },
+    paid: "Pagata", unpaid: "Non ancora pagata",
+    transferTitle: "Dati per il bonifico", transferText: "Effettua il bonifico dell'importo totale indicando il codice di prenotazione come causale.",
+    bank: "Banca", holder: "Intestatario", rib: "RIB / IBAN", swift: "SWIFT", reason: "Causale",
+    cashText: "Pagherai l'autista in contanti il giorno del viaggio.",
+    keep: "Conserva il tuo codice: serve per consultare o annullare la prenotazione.",
+    whatsapp: "Domande? Scrivici su WhatsApp", print: "Stampa",
+  },
+  myBooking: {
+    title: "Trova la mia prenotazione", text: "Inserisci il codice di prenotazione e l'email usata.",
+    ref: "Codice di prenotazione", find: "Cerca", notFound: "Nessuna prenotazione trovata con questo codice ed email.",
+    cancel: "Annulla questa prenotazione", cancelConfirm: "Sì, annulla", cancelled: "La tua prenotazione è stata annullata.",
+    cancelInfo: "Cancellazione gratuita fino a 24 ore prima della partenza.", tooLate: "Non è più possibile annullare online. Contattaci.",
+  },
+  contact: { title: "Contattaci", text: "Rispondiamo rapidamente su WhatsApp, 7 giorni su 7.", phone: "Telefono", email: "Email", address: "Indirizzo", hours: "Orari", whatsapp: "Scrivici su WhatsApp" },
+  faq: {
+    title: "Domande frequenti",
+    items: [
+      { q: "Come si paga?", a: "In contanti all'autista il giorno del viaggio, oppure con bonifico bancario prima del viaggio." },
+      { q: "Posso annullare la prenotazione?", a: "Sì, la cancellazione è gratuita fino a 24 ore prima della partenza dalla pagina «La mia prenotazione»." },
+      { q: "E se il mio volo è in ritardo?", a: "Seguiamo il tuo numero di volo. L'autista ti aspetta senza costi aggiuntivi." },
+      { q: "Avete seggiolini per bambini?", a: "Sì, su richiesta. Indicalo nelle note al momento della prenotazione." },
+      { q: "Il pranzo è incluso nelle escursioni?", a: "Il pranzo non è incluso salvo diversa indicazione. L'autista ti consiglierà buoni ristoranti." },
+    ],
+  },
+  legal: {
+    terms: "Termini e condizioni", privacy: "Informativa sulla privacy",
+    termsBody: [
+      "Le prenotazioni sono confermate dall'agenzia via WhatsApp o email.",
+      "Cancellazione gratuita fino a 24 ore prima della partenza. Le cancellazioni successive possono essere addebitate.",
+      "I passeggeri devono trovarsi al punto di prelievo all'orario previsto. L'autista attende al massimo 15 minuti, tranne per i transfer aeroportuali.",
+      "I prezzi sono in dirham marocchini (MAD), tasse incluse.",
+    ],
+    privacyBody: [
+      "Raccogliamo solo i dati necessari alla prenotazione: nome, email, telefono e dettagli del viaggio.",
+      "I tuoi dati non vengono mai venduti né condivisi, salvo con l'autista assegnato al tuo viaggio.",
+      "Puoi chiederci in qualsiasi momento di accedere ai tuoi dati o di cancellarli.",
+    ],
+  },
+  footer: { about: "Agenzia di trasporti autorizzata con sede a Marrakech. Autobus, transfer ed escursioni in tutto il Marocco.", links: "Link", rights: "Tutti i diritti riservati." },
+};

@@ -1,0 +1,74 @@
+import type { Booking, BusRoute, Tour, Transfer } from "@prisma/client";
+import { updateBooking } from "@/app/admin/actions";
+import { formatPrice, tr } from "@/lib/i18n";
+import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL } from "./Shell";
+
+export type FullBooking = Booking & { busRoute: BusRoute | null; transfer: Transfer | null; tour: Tour | null };
+
+export function tripLabel(b: FullBooking) {
+  if (b.busRoute) return `${b.busRoute.fromCity} → ${b.busRoute.toCity}`;
+  if (b.transfer) return `${b.transfer.airport} → ${b.transfer.destination}`;
+  if (b.tour) return tr(b.tour.title, "fr");
+  return "—";
+}
+
+export default function BookingRow({ b }: { b: FullBooking }) {
+  const wa = b.phone.replace(/[^\d]/g, "");
+  return (
+    <tr className="align-top">
+      <td className="px-4 py-3">
+        <p className="font-mono text-xs font-bold">{b.reference}</p>
+        <p className="text-xs text-slate-400">{b.createdAt.toLocaleDateString("fr-FR")}</p>
+      </td>
+      <td className="px-4 py-3">
+        <p className="font-medium">{b.date}{b.time ? ` · ${b.time}` : ""}</p>
+        <p className="text-xs text-slate-500">{TYPE_LABEL[b.type]} · {tripLabel(b)}</p>
+        {(b.pickup || b.flight) && <p className="text-xs text-slate-500">{[b.pickup, b.flight && `Vol ${b.flight}`].filter(Boolean).join(" · ")}</p>}
+        {b.notes && <p className="mt-1 max-w-xs text-xs italic text-slate-500">“{b.notes}”</p>}
+      </td>
+      <td className="px-4 py-3">
+        <p className="font-medium">{b.fullName}</p>
+        <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-700 hover:underline">{b.phone}</a>
+        <p className="text-xs text-slate-500">{b.email} · {b.locale.toUpperCase()}</p>
+      </td>
+      <td className="px-4 py-3 text-center">{b.passengers}</td>
+      <td className="px-4 py-3">
+        <p className="font-semibold">{formatPrice(b.total)}</p>
+        <p className="text-xs text-slate-500">{b.payment === "CASH" ? "Espèces" : "Virement"}</p>
+        <form action={updateBooking}>
+          <input type="hidden" name="id" value={b.id} />
+          <input type="hidden" name="paid" value={String(!b.paid)} />
+          <button className={`mt-1 rounded-full px-2 py-0.5 text-xs font-semibold ${b.paid ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600"}`}>
+            {b.paid ? "✓ Payée" : "Non payée"}
+          </button>
+        </form>
+      </td>
+      <td className="px-4 py-3">
+        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_COLOR[b.status]}`}>{STATUS_LABEL[b.status]}</span>
+        <form action={updateBooking} className="mt-2 flex gap-1">
+          <input type="hidden" name="id" value={b.id} />
+          <select name="status" defaultValue={b.status} className="rounded-lg border border-slate-200 px-2 py-1 text-xs">
+            {Object.entries(STATUS_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+          <button className="rounded-lg bg-brand-700 px-2 py-1 text-xs font-semibold text-white">OK</button>
+        </form>
+      </td>
+    </tr>
+  );
+}
+
+export function BookingTable({ bookings }: { bookings: FullBooking[] }) {
+  return (
+    <div className="card overflow-x-auto">
+      <table className="w-full min-w-[900px] text-left text-sm">
+        <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
+          <tr><th className="px-4 py-3">Réf.</th><th className="px-4 py-3">Trajet</th><th className="px-4 py-3">Client</th><th className="px-4 py-3 text-center">Pers.</th><th className="px-4 py-3">Montant</th><th className="px-4 py-3">Statut</th></tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {bookings.map((b) => <BookingRow key={b.id} b={b} />)}
+          {bookings.length === 0 && <tr><td colSpan={6} className="px-4 py-10 text-center text-slate-400">Aucune réservation.</td></tr>}
+        </tbody>
+      </table>
+    </div>
+  );
+}

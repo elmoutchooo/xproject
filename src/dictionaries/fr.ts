@@ -1,0 +1,115 @@
+import type { Dict } from "@/lib/i18n";
+
+export const fr: Dict = {
+  nav: { home: "Accueil", bus: "Bus", transfers: "Transferts aéroport", excursions: "Excursions", myBooking: "Ma réservation", contact: "Contact", bookNow: "Réserver" },
+  hero: {
+    badge: "Transport agréé partout au Maroc",
+    title: "Voyagez au Maroc en tout confort, de l'aéroport au désert",
+    subtitle: "Bus entre les villes, transferts privés depuis l'aéroport, navettes touristiques et excursions à la journée. Réservez en 2 minutes, payez en espèces ou par virement.",
+  },
+  search: {
+    tabBus: "Bus", tabTransfer: "Transfert aéroport", tabTour: "Excursions",
+    from: "Départ", to: "Arrivée", date: "Date", passengers: "Passagers", search: "Rechercher",
+    airport: "Aéroport", any: "Tous", category: "Type",
+  },
+  services: {
+    title: "Nos services",
+    subtitle: "Une seule agence pour tous vos trajets au Maroc.",
+    bus: { t: "Bus entre les villes", d: "Départs quotidiens entre Marrakech, Essaouira, Casablanca et Agadir." },
+    transfer: { t: "Transferts aéroport", d: "Un chauffeur privé vous attend à l'arrivée avec une pancarte à votre nom." },
+    shuttle: { t: "Navettes touristiques", d: "Navettes partagées vers l'Atlas, Imlil et Ouarzazate." },
+    tour: { t: "Excursions à la journée", d: "Essaouira, Ourika, Ouzoud, Agafay : aller et retour dans la journée." },
+  },
+  why: {
+    title: "Pourquoi voyager avec nous",
+    items: [
+      { t: "Chauffeurs professionnels", d: "Expérimentés, agréés et multilingues." },
+      { t: "Véhicules confortables", d: "Récents, climatisés et assurés." },
+      { t: "Prix fixes", d: "Le prix affiché est le prix payé. Aucune surprise." },
+      { t: "Assistance 7j/7", d: "Joignez-nous sur WhatsApp avant et pendant votre voyage." },
+    ],
+  },
+  popular: { title: "Excursions populaires", viewAll: "Voir toutes les excursions" },
+  reviews: {
+    title: "L'avis de nos voyageurs",
+    items: [
+      { n: "Sarah, Royaume-Uni", t: "Driver was waiting at the airport at 2am. Clean van, fair price. Highly recommended." },
+      { n: "Julien, France", t: "Excursion à Essaouira parfaite, chauffeur ponctuel et très sympa." },
+      { n: "Lucía, Espagne", t: "Todo muy bien organizado, reservamos el día antes sin problema." },
+    ],
+  },
+  cta: { title: "Prêt à partir ?", text: "Réservez votre place maintenant et recevez votre confirmation par email.", button: "Réserver un trajet" },
+  common: {
+    perPerson: "par personne", perVehicle: "par véhicule", from: "À partir de", hours: "h", min: "min",
+    seatsLeft: "places restantes", spotsLeft: "places restantes", soldOut: "Complet", book: "Réserver", details: "Détails",
+    back: "Retour", noResults: "Aucun résultat pour cette recherche.", departure: "Départ", arrival: "Arrivée",
+    duration: "Durée", price: "Prix", total: "Total", people: "personnes", upTo: "Jusqu'à",
+    pickTime: "Départ à", fullDay: "Journée", shuttle: "Navette", includes: "Inclus",
+    vehicles: { CAR: "Voiture", VAN: "Van", MINIBUS: "Minibus" },
+  },
+  bus: { title: "Bus entre les villes", subtitle: "Choisissez votre trajet et votre date, puis réservez vos places.", allRoutes: "Tous les trajets", daily: "Tous les jours", routeTitle: "Bus {from} – {to}", routeDesc: "Bus quotidien de {from} à {to} : départ à {time}, environ {duration}, à partir de {price} par personne. Réservez en ligne et payez en espèces ou par virement.", otherRoutes: "Autres trajets", chooseDate: "Choisissez votre date de voyage", seo: "Billets de bus au Maroc : Marrakech, Essaouira, Casablanca, Agadir" },
+  transfers: {
+    title: "Transferts aéroport", subtitle: "Transfert privé de l'aéroport à votre hôtel, à prix fixe par véhicule.",
+    steps: ["Réservez en ligne avec votre numéro de vol", "Votre chauffeur vous attend à l'arrivée avec une pancarte", "Détendez-vous, direction votre hôtel"],
+    capacity: "passagers max",
+  },
+  excursions: { title: "Excursions & navettes", subtitle: "Excursions à la journée et navettes partagées au départ de Marrakech.", all: "Toutes", fullDay: "Excursions à la journée", shuttle: "Navettes", meeting: "Départ de" },
+  book: {
+    title: "Finalisez votre réservation", summary: "Votre trajet", details: "Vos coordonnées",
+    fullName: "Nom complet", email: "Email", phone: "Téléphone / WhatsApp", phoneHint: "Avec l'indicatif, ex. +33 6 12 34 56 78",
+    date: "Date", time: "Heure de prise en charge", passengers: "Passagers",
+    pickup: "Hôtel / adresse de prise en charge", pickupHint: "Nom de votre hôtel ou riad", flight: "Numéro de vol", flightHint: "ex. AT800",
+    notes: "Remarques (facultatif)", payment: "Mode de paiement",
+    payCash: "Espèces", payCashText: "Payez le chauffeur le jour du trajet.",
+    payTransfer: "Virement bancaire", payTransferText: "Virez le montant avant le trajet. Les coordonnées bancaires s'affichent après la réservation.",
+    confirm: "Confirmer la réservation", accept: "J'accepte les conditions générales",
+    errors: {
+      required: "Veuillez remplir tous les champs obligatoires.", email: "Veuillez saisir un email valide.",
+      past: "Veuillez choisir une date à partir d'aujourd'hui.", seats: "Pas assez de places à cette date.",
+      capacity: "Trop de passagers pour ce véhicule.", notFound: "Ce trajet n'est plus disponible.",
+    },
+  },
+  confirm: {
+    title: "Réservation reçue", thanks: "Merci ! Nous avons bien reçu votre réservation et la confirmerons rapidement par WhatsApp ou email.",
+    reference: "Référence de réservation", status: "Statut",
+    statuses: { PENDING: "En attente de confirmation", CONFIRMED: "Confirmée", CANCELLED: "Annulée", COMPLETED: "Terminée" },
+    paid: "Payée", unpaid: "Pas encore payée",
+    transferTitle: "Coordonnées pour le virement", transferText: "Virez le montant total en indiquant votre référence de réservation comme motif.",
+    bank: "Banque", holder: "Titulaire", rib: "RIB / IBAN", swift: "SWIFT", reason: "Motif du virement",
+    cashText: "Vous paierez le chauffeur en espèces le jour du trajet.",
+    keep: "Gardez votre référence : elle sert à consulter ou annuler votre réservation.",
+    whatsapp: "Une question ? Écrivez-nous sur WhatsApp", print: "Imprimer",
+  },
+  myBooking: {
+    title: "Retrouver ma réservation", text: "Saisissez votre référence de réservation et l'email utilisé.",
+    ref: "Référence de réservation", find: "Rechercher", notFound: "Aucune réservation trouvée avec cette référence et cet email.",
+    cancel: "Annuler cette réservation", cancelConfirm: "Oui, annuler", cancelled: "Votre réservation a été annulée.",
+    cancelInfo: "Annulation gratuite jusqu'à 24 heures avant le départ.", tooLate: "L'annulation en ligne n'est plus possible. Merci de nous contacter.",
+  },
+  contact: { title: "Contactez-nous", text: "Nous répondons rapidement sur WhatsApp, 7 jours sur 7.", phone: "Téléphone", email: "Email", address: "Adresse", hours: "Horaires", whatsapp: "Discuter sur WhatsApp" },
+  faq: {
+    title: "Questions fréquentes",
+    items: [
+      { q: "Comment payer ?", a: "En espèces au chauffeur le jour du trajet, ou par virement bancaire avant le trajet." },
+      { q: "Puis-je annuler ma réservation ?", a: "Oui, l'annulation est gratuite jusqu'à 24 heures avant le départ depuis la page « Ma réservation »." },
+      { q: "Et si mon vol a du retard ?", a: "Nous suivons votre numéro de vol. Votre chauffeur vous attend sans frais supplémentaires." },
+      { q: "Avez-vous des sièges enfants ?", a: "Oui, sur demande. Indiquez-le dans les remarques lors de la réservation." },
+      { q: "Le déjeuner est-il inclus dans les excursions ?", a: "Le déjeuner n'est pas inclus sauf mention contraire. Votre chauffeur vous conseillera de bons restaurants." },
+    ],
+  },
+  legal: {
+    terms: "Conditions générales", privacy: "Politique de confidentialité",
+    termsBody: [
+      "Les réservations sont confirmées par l'agence par WhatsApp ou email.",
+      "Annulation gratuite jusqu'à 24 heures avant le départ. Les annulations tardives peuvent être facturées.",
+      "Les passagers doivent être au point de prise en charge à l'heure prévue. Le chauffeur attend 15 minutes maximum, sauf pour les transferts aéroport.",
+      "Les prix sont en dirhams marocains (MAD), toutes taxes comprises.",
+    ],
+    privacyBody: [
+      "Nous collectons uniquement les données nécessaires à votre réservation : nom, email, téléphone et détails du trajet.",
+      "Vos données ne sont jamais vendues ni partagées, sauf avec le chauffeur affecté à votre trajet.",
+      "Conformément à la loi 09-08, vous pouvez demander l'accès à vos données ou leur suppression à tout moment.",
+    ],
+  },
+  footer: { about: "Agence de transport agréée basée à Marrakech. Bus, transferts et excursions partout au Maroc.", links: "Liens", rights: "Tous droits réservés." },
+};
