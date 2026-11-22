@@ -33,6 +33,8 @@ npm run dev               # http://localhost:3000
 Admin : http://localhost:3000/admin (mot de passe de départ = `ADMIN_PASSWORD` dans `.env`, à changer ensuite dans **Paramètres**).
 Chauffeurs : http://localhost:3000/driver
 
+Pour voir le tableau de bord rempli : `npm run db:demo` ajoute des réservations fictives (références `DM-…`), `npm run db:demo:clear` les supprime sans toucher aux vraies.
+
 Après une mise à jour du code (`git pull`), lancez `npm install` puis `npm run db:push` pour mettre la base de données à jour sans perdre vos réservations. Attention : `npm run setup` remet les données d'exemple et **efface** les réservations.
 
 ## À personnaliser

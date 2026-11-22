@@ -9,7 +9,9 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.mjs",
-    "setup": "prisma db push && node prisma/seed.mjs"
+    "setup": "prisma db push && node prisma/seed.mjs",
+    "db:demo": "node prisma/demo.mjs",
+    "db:demo:clear": "node prisma/demo.mjs --clear"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
