@@ -48,20 +48,20 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "28px 28px" }} />
         <div className="absolute -right-24 -top-32 h-[28rem] w-[28rem] animate-float rounded-full bg-coral-500/35 blur-3xl" />
         <div className="absolute -bottom-48 -left-24 h-[26rem] w-[26rem] animate-float-slow rounded-full bg-coral-700/30 blur-3xl" />
-        <div className="container-x relative grid items-center gap-10 pb-32 pt-14 sm:pt-20 lg:grid-cols-[1.15fr_1fr]">
+        <div className="container-x relative grid items-center gap-8 pb-28 pt-10 sm:pt-14 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <span className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-coral-100">
               <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-coral-500" /></span>
               {t.hero.badge}
             </span>
-            <h1 className="mt-5 animate-fade-up text-4xl font-semibold leading-[1.08] tracking-tight text-white [animation-delay:100ms] sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
-            <p className="mt-5 max-w-xl animate-fade-up text-lg font-light text-ink-200 [animation-delay:220ms]">{t.hero.subtitle}</p>
-            <div className="mt-8 flex animate-fade-up flex-wrap gap-3 [animation-delay:340ms]">
-              <Link href={`/${locale}/excursions`} className="btn-primary px-6 py-3.5">{t.nav.bookNow}<ArrowIcon className="h-4 w-4" /></Link>
-              <Link href={`/${locale}/transfers`} className="btn border border-white/20 px-6 py-3.5 text-white hover:bg-white/10">{t.nav.transfers}</Link>
+            <h1 className="mt-4 animate-fade-up text-3xl font-semibold leading-[1.1] tracking-tight text-white [animation-delay:100ms] sm:text-4xl lg:text-5xl">{t.hero.title}</h1>
+            <p className="mt-4 max-w-xl animate-fade-up text-base font-light text-ink-200 [animation-delay:220ms]">{t.hero.subtitle}</p>
+            <div className="mt-6 flex animate-fade-up flex-wrap gap-3 [animation-delay:340ms]">
+              <Link href={`/${locale}/excursions`} className="btn-primary px-5 py-3">{t.nav.bookNow}<ArrowIcon className="h-4 w-4" /></Link>
+              <Link href={`/${locale}/transfers`} className="btn border border-white/20 px-5 py-3 text-white hover:bg-white/10">{t.nav.transfers}</Link>
             </div>
           </div>
-          <div className="relative mx-auto hidden w-full max-w-sm animate-fade-up [animation-delay:200ms] sm:block">
+          <div className="relative mx-auto hidden w-full max-w-[16rem] animate-fade-up lg:max-w-[17rem] [animation-delay:200ms] sm:block">
             <div className="absolute inset-6 rounded-[28%] bg-coral-500/40 blur-2xl" />
             <div className="relative grid aspect-square place-items-center rounded-[24%] bg-coral-500 shadow-2xl shadow-black/40">
               <AnimatedMark className="w-[80%]" />
