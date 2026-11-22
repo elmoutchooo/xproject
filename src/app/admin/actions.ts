@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { completeBooking } from "@/lib/commission";
 import { hashPassword, normalizePhone } from "@/lib/password";
 import { checkAdminPassword, setAdminPassword } from "@/lib/adminAuth";
+import { MAX_WARNINGS } from "@/lib/ranking";
 import { createSessionToken, SESSION_COOKIE, sessionCookieOptions, verifySessionToken } from "@/lib/session";
 
 async function requireAdmin() {
@@ -81,6 +82,7 @@ async function saveDriverInner(fd: FormData): Promise<DriverState> {
 
   const data = {
     name: s(fd, "name"), phone, vehicle: s(fd, "vehicle") || null, commissionRate: rate, active: fd.get("active") === "on",
+    ...(fd.get("active") === "on" ? { blockedReason: null } : {}),
     ...(password ? { passwordHash: await hashPassword(password) } : {}),
   };
   if (id) await db.driver.update({ where: { id }, data });
@@ -159,4 +161,67 @@ export async function changeAdminPassword(_: { error?: string; ok?: boolean }, f
   if (next === current) return { error: "Le nouveau mot de passe doit être différent de l'ancien." };
   await setAdminPassword(next);
   return { ok: true };
+}
+
+// ---- Avis clients ----
+export async function toggleReview(fd: FormData) {
+  await requireAdmin();
+  const r = await db.review.findUnique({ where: { id: s(fd, "id") } });
+  if (r) await db.review.update({ where: { id: r.id }, data: { published: !r.published } });
+  revalidatePath("/admin", "layout");
+}
+
+export async function deleteReview(fd: FormData) {
+  await requireAdmin();
+  await db.review.delete({ where: { id: s(fd, "id") } }).catch(() => null);
+  revalidatePath("/admin", "layout");
+}
+
+// ---- Avertissements et blocage des chauffeurs ----
+async function block(driverId: string, reason: string) {
+  const today = new Date().toISOString().slice(0, 10);
+  await db.$transaction([
+    db.driver.update({ where: { id: driverId }, data: { active: false, blockedReason: reason } }),
+    // Ses trajets à venir repassent « sans chauffeur » pour être réattribués
+    db.booking.updateMany({ where: { driverId, date: { gte: today }, status: { in: ["PENDING", "CONFIRMED"] } }, data: { driverId: null } }),
+  ]);
+}
+
+export async function addWarning(_: { error?: string; ok?: string }, fd: FormData): Promise<{ error?: string; ok?: string }> {
+  await requireAdmin();
+  const driverId = s(fd, "driverId");
+  const reason = s(fd, "reason").slice(0, 300);
+  if (!reason) return { error: "Indiquez le motif de l'avertissement." };
+  await db.warning.create({ data: { driverId, reason } });
+  const count = await db.warning.count({ where: { driverId } });
+  let ok = `Avertissement ${count}/${MAX_WARNINGS} enregistré.`;
+  if (count >= MAX_WARNINGS) {
+    await block(driverId, `${count} avertissements`);
+    ok += " Le chauffeur est maintenant bloqué.";
+  }
+  revalidatePath("/admin", "layout");
+  return { ok };
+}
+
+export async function removeWarning(fd: FormData) {
+  await requireAdmin();
+  await db.warning.delete({ where: { id: s(fd, "id") } }).catch(() => null);
+  revalidatePath("/admin", "layout");
+}
+
+export async function blockDriver(fd: FormData) {
+  await requireAdmin();
+  await block(s(fd, "driverId"), s(fd, "reason") || "Bloqué par l'administrateur");
+  revalidatePath("/admin", "layout");
+}
+
+export async function unblockDriver(fd: FormData) {
+  await requireAdmin();
+  const driverId = s(fd, "driverId");
+  // Débloquer remet aussi les avertissements à zéro, sinon le prochain le rebloquerait aussitôt
+  await db.$transaction([
+    db.warning.deleteMany({ where: { driverId } }),
+    db.driver.update({ where: { id: driverId }, data: { active: true, blockedReason: null } }),
+  ]);
+  revalidatePath("/admin", "layout");
 }

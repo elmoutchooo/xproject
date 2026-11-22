@@ -6,7 +6,8 @@ import { canCancel } from "@/lib/booking";
 import { AGENCY } from "@/config/agency";
 import { cancelBooking } from "../actions";
 import PrintButton from "@/components/PrintButton";
-import { CheckIcon, WhatsAppIcon } from "@/components/Icons";
+import ReviewForm from "@/components/ReviewForm";
+import { CheckIcon, StarIcon, WhatsAppIcon } from "@/components/Icons";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -19,7 +20,7 @@ const statusColor: Record<string, string> = {
 export default async function BookingPage({ params }: { params: Promise<{ locale: Locale; id: string }> }) {
   const { locale, id } = await params;
   const t = getDict(locale);
-  const b = await db.booking.findUnique({ where: { id }, include: { busRoute: true, transfer: true, tour: true } });
+  const b = await db.booking.findUnique({ where: { id }, include: { busRoute: true, transfer: true, tour: true, review: true } });
   if (!b) notFound();
 
   const trip = b.busRoute ? `${b.busRoute.fromCity} → ${b.busRoute.toCity}`
@@ -100,7 +101,19 @@ export default async function BookingPage({ params }: { params: Promise<{ locale
         <PrintButton label={t.confirm.print} />
       </div>
 
-      {b.status !== "CANCELLED" && (
+      {b.status === "COMPLETED" && !b.review && (
+        <ReviewForm id={b.id} locale={locale} t={t.review} defaultName={b.fullName.split(" ")[0]} />
+      )}
+      {b.review && (
+        <div className="card mt-8 bg-emerald-50/50 p-6">
+          <p className="text-lg font-semibold text-ink-900">{t.review.thanks}</p>
+          <p className="label mt-3">{t.review.yours}</p>
+          <div className="flex gap-0.5 text-coral-500">{[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} className={`h-5 w-5 ${i <= b.review!.rating ? "" : "opacity-20"}`} />)}</div>
+          {b.review.comment && <p className="mt-2 text-ink-700">“{b.review.comment}”</p>}
+        </div>
+      )}
+
+      {b.status !== "CANCELLED" && b.status !== "COMPLETED" && (
         <div className="no-print card mt-8 p-6">
           <p className="text-sm text-ink-600">{canCancel(b) ? t.myBooking.cancelInfo : t.myBooking.tooLate}</p>
           {canCancel(b) && (

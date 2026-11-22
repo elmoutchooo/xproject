@@ -84,6 +84,7 @@ model Booking {
   completedAt DateTime?
   // true quand l'agence et le chauffeur ont fait les comptes pour ce trajet
   settled    Boolean   @default(false)
+  review     Review?
   createdAt  DateTime  @default(now())
 }
 
@@ -95,7 +96,10 @@ model Driver {
   vehicle        String?   // ex. "Mercedes Vito – 12345-A-7"
   commissionRate Int       @default(10) // % pris par l'agence sur chaque trajet
   active         Boolean   @default(true)
+  blockedReason  String?   // rempli quand le compte est bloqué
   bookings       Booking[]
+  reviews        Review[]
+  warnings       Warning[]
   createdAt      DateTime  @default(now())
 }
 
@@ -104,4 +108,28 @@ model Setting {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+// Avis laissé par le client après un trajet terminé
+model Review {
+  id        String   @id @default(cuid())
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId String   @unique
+  driver    Driver?  @relation(fields: [driverId], references: [id])
+  driverId  String?
+  rating    Int      // 1 à 5 étoiles
+  comment   String?
+  name      String   // prénom affiché
+  locale    String   @default("en")
+  published Boolean  @default(true) // visible sur le site
+  createdAt DateTime @default(now())
+}
+
+// Avertissement donné à un chauffeur (3 = compte bloqué)
+model Warning {
+  id        String   @id @default(cuid())
+  driver    Driver   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  driverId  String
+  reason    String
+  createdAt DateTime @default(now())
 }

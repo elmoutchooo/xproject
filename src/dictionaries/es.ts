@@ -86,6 +86,13 @@ export const es: Dict = {
     cancel: "Cancelar esta reserva", cancelConfirm: "Sí, cancelar", cancelled: "Tu reserva ha sido cancelada.",
     cancelInfo: "Cancelación gratuita hasta 24 horas antes de la salida.", tooLate: "Ya no es posible cancelar online. Contáctanos.",
   },
+  review: {
+    title: "¿Qué tal fue tu viaje?", text: "Tu opinión nos ayuda a nosotros y a otros viajeros. Solo te llevará 30 segundos.",
+    rating: "Tu puntuación", comment: "Tu comentario (opcional)", commentHint: "Conductor, vehículo, puntualidad…", name: "Nombre que se mostrará con tu opinión",
+    submit: "Enviar mi opinión", thanks: "¡Gracias por tu opinión!", yours: "Tu opinión", stars: ["Muy malo", "Malo", "Correcto", "Bueno", "Excelente"],
+    errors: { rating: "Elige una puntuación de 1 a 5 estrellas.", notAllowed: "Podrás dejar tu opinión cuando el viaje haya terminado." },
+    sectionTitle: "Lo que dicen nuestros viajeros", basedOn: "de {n} opiniones",
+  },
   contact: { title: "Contacto", text: "Respondemos rápido por WhatsApp, 7 días a la semana.", phone: "Teléfono", email: "Email", address: "Dirección", hours: "Horario", whatsapp: "Escribir por WhatsApp" },
   faq: {
     title: "Preguntas frecuentes",

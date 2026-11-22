@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BusIcon, GridIcon, MountainIcon, PlaneIcon, RouteIcon, SettingsIcon, TicketIcon, UsersIcon } from "@/components/Icons";
+import { BusIcon, GridIcon, MountainIcon, PlaneIcon, SettingsIcon, StarIcon, TicketIcon, UsersIcon } from "@/components/Icons";
 
 const groups = [
   { title: "Activité", links: [
     { href: "/admin", label: "Tableau de bord", icon: GridIcon },
     { href: "/admin/bookings", label: "Réservations", icon: TicketIcon },
+    { href: "/admin/reviews", label: "Avis clients", icon: StarIcon },
   ] },
   { title: "Équipe", links: [
     { href: "/admin/drivers", label: "Chauffeurs", icon: UsersIcon },

@@ -24,11 +24,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const t = getDict(locale);
-  const [routes, transfers, tours] = await Promise.all([
+  const [routes, transfers, tours, reviews, reviewAgg] = await Promise.all([
     db.busRoute.findMany({ where: { active: true }, select: { fromCity: true, toCity: true } }),
     db.transfer.findMany({ where: { active: true }, select: { airport: true }, distinct: ["airport"] }),
     db.tour.findMany({ where: { active: true, category: "FULL_DAY" }, take: 3, orderBy: { createdAt: "asc" } }),
+    db.review.findMany({ where: { published: true, comment: { not: null } }, orderBy: { createdAt: "desc" }, take: 6 }),
+    db.review.aggregate({ where: { published: true }, _avg: { rating: true }, _count: true }),
   ]);
+  const avg = reviewAgg._avg.rating;
   const uniq = (a: string[]) => [...new Set(a)].sort();
   const cities = { from: uniq(routes.map((r) => r.fromCity)), to: uniq(routes.map((r) => r.toCity)) };
 
@@ -42,7 +45,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
 
   return (
     <>
-      <JsonLd data={agencyJsonLd(locale, t.hero.subtitle)} />
+      <JsonLd data={{
+        ...agencyJsonLd(locale, t.hero.subtitle),
+        ...(avg && reviewAgg._count ? { aggregateRating: { "@type": "AggregateRating", ratingValue: avg.toFixed(1), reviewCount: reviewAgg._count, bestRating: 5 } } : {}),
+      }} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-900">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "28px 28px" }} />
@@ -123,21 +129,34 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
         </div>
       </section>
 
-      {/* Reviews */}
-      <section className="container-x mt-24">
-        <Reveal><h2 className="h-section">{t.reviews.title}</h2></Reveal>
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {t.reviews.items.map((r, i) => (
-            <Reveal key={r.n} delay={i * 110}>
-              <figure className="card h-full p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <div className="flex gap-0.5 text-coral-500">{[0, 1, 2, 3, 4].map((k) => <StarIcon key={k} />)}</div>
-                <blockquote className="mt-3 text-ink-700">“{r.t}”</blockquote>
-                <figcaption className="mt-4 text-sm font-semibold text-ink-900">{r.n}</figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* Avis clients (vrais avis laissés après les trajets) */}
+      {reviews.length > 0 && avg != null && (
+        <section className="container-x mt-24">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="h-section">{t.review.sectionTitle}</h2>
+            <p className="flex items-center gap-2 text-ink-600">
+              <span className="flex text-coral-500">{[1, 2, 3, 4, 5].map((k) => <StarIcon key={k} className={`h-5 w-5 ${k <= Math.round(avg) ? "" : "opacity-25"}`} />)}</span>
+              <span className="text-lg font-semibold text-ink-900">{avg.toFixed(1).replace(".", ",")}/5</span>
+              <span className="text-sm">{t.review.basedOn.replace("{n}", String(reviewAgg._count))}</span>
+            </p>
+          </Reveal>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {reviews.map((r, i) => (
+              <Reveal key={r.id} delay={(i % 3) * 110}>
+                <figure className="card h-full p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <div className="flex gap-0.5 text-coral-500">{[1, 2, 3, 4, 5].map((k) => <StarIcon key={k} className={k <= r.rating ? "h-4 w-4" : "h-4 w-4 opacity-20"} />)}</div>
+                  <blockquote className="mt-3 text-ink-700">“{r.comment}”</blockquote>
+                  <figcaption className="mt-4 flex items-center gap-2 text-sm">
+                    <span className="grid h-8 w-8 place-items-center rounded-full bg-coral-50 text-xs font-semibold text-coral-700">{r.name.slice(0, 1).toUpperCase()}</span>
+                    <span className="font-semibold text-ink-900">{r.name}</span>
+                    <span className="text-ink-400">· {r.createdAt.toLocaleDateString(locale, { month: "long", year: "numeric" })}</span>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CTA avec la navette qui roule */}
       <section className="container-x mt-24">

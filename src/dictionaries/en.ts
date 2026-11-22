@@ -84,6 +84,13 @@ export const en = {
     cancel: "Cancel this booking", cancelConfirm: "Yes, cancel", cancelled: "Your booking has been cancelled.",
     cancelInfo: "Free cancellation up to 24 hours before departure.", tooLate: "Online cancellation is no longer possible. Please contact us.",
   },
+  review: {
+    title: "How was your trip?", text: "Your opinion helps us and helps other travellers. It only takes 30 seconds.",
+    rating: "Your rating", comment: "Your comment (optional)", commentHint: "Driver, vehicle, punctuality…", name: "First name shown with your review",
+    submit: "Send my review", thanks: "Thank you for your review!", yours: "Your review", stars: ["Very bad", "Bad", "OK", "Good", "Excellent"],
+    errors: { rating: "Please choose a rating from 1 to 5 stars.", notAllowed: "You can leave a review once the trip is completed." },
+    sectionTitle: "What our travellers say", basedOn: "based on {n} reviews",
+  },
   contact: { title: "Contact us", text: "We answer quickly on WhatsApp, 7 days a week.", phone: "Phone", email: "Email", address: "Address", hours: "Opening hours", whatsapp: "Chat on WhatsApp" },
   faq: {
     title: "Frequently asked questions",

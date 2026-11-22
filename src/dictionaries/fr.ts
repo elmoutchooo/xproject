@@ -86,6 +86,13 @@ export const fr: Dict = {
     cancel: "Annuler cette réservation", cancelConfirm: "Oui, annuler", cancelled: "Votre réservation a été annulée.",
     cancelInfo: "Annulation gratuite jusqu'à 24 heures avant le départ.", tooLate: "L'annulation en ligne n'est plus possible. Merci de nous contacter.",
   },
+  review: {
+    title: "Comment s'est passé votre trajet ?", text: "Votre avis nous aide et aide les autres voyageurs. Cela prend 30 secondes.",
+    rating: "Votre note", comment: "Votre commentaire (facultatif)", commentHint: "Chauffeur, véhicule, ponctualité…", name: "Prénom affiché avec votre avis",
+    submit: "Envoyer mon avis", thanks: "Merci pour votre avis !", yours: "Votre avis", stars: ["Très mauvais", "Mauvais", "Correct", "Bien", "Excellent"],
+    errors: { rating: "Choisissez une note de 1 à 5 étoiles.", notAllowed: "Vous pourrez laisser un avis une fois le trajet terminé." },
+    sectionTitle: "L'avis de nos voyageurs", basedOn: "sur {n} avis",
+  },
   contact: { title: "Contactez-nous", text: "Nous répondons rapidement sur WhatsApp, 7 jours sur 7.", phone: "Téléphone", email: "Email", address: "Adresse", hours: "Horaires", whatsapp: "Discuter sur WhatsApp" },
   faq: {
     title: "Questions fréquentes",

@@ -7,6 +7,9 @@ import { LogoTile, Wordmark } from "@/components/brand/Logo";
 import Minibus from "@/components/brand/Minibus";
 import { AreaGuard } from "@/components/SessionGuard";
 import AutoRefresh from "@/components/AutoRefresh";
+import { driverRanking, MAX_WARNINGS, stars } from "@/lib/ranking";
+import Stars from "@/components/admin/Stars";
+import WarningDots from "@/components/admin/WarningDots";
 import { currentDriver, driverCompleteTrip, driverLogout } from "./actions";
 import { BusIcon, CheckIcon, ClockIcon, MountainIcon, PhoneIcon, PinIcon, PlaneIcon, ShieldIcon, UsersIcon, WhatsAppIcon } from "@/components/Icons";
 
@@ -33,12 +36,17 @@ export default async function DriverHome({ searchParams }: { searchParams: Promi
   const monthStart = today.slice(0, 8) + "01";
   const include = { busRoute: true, transfer: true, tour: true };
 
-  const [upcoming, done, monthDone, unsettled] = await Promise.all([
+  const [upcoming, done, monthDone, unsettled, ranking, warnings, reviews] = await Promise.all([
     db.booking.findMany({ where: { driverId: driver.id, status: { in: ["PENDING", "CONFIRMED"] } }, include, orderBy: [{ date: "asc" }, { time: "asc" }] }),
     db.booking.findMany({ where: { driverId: driver.id, status: "COMPLETED" }, include, orderBy: [{ date: "desc" }, { time: "desc" }], take: 50 }),
     db.booking.findMany({ where: { driverId: driver.id, status: "COMPLETED", date: { gte: monthStart } }, select: { total: true, commission: true, payment: true } }),
     db.booking.findMany({ where: { driverId: driver.id, status: "COMPLETED", settled: false }, select: { total: true, commission: true, payment: true } }),
+    driverRanking(),
+    db.warning.findMany({ where: { driverId: driver.id }, orderBy: { createdAt: "desc" } }),
+    db.review.findMany({ where: { driverId: driver.id }, orderBy: { createdAt: "desc" }, take: 3 }),
   ]);
+  const me = ranking.find((r) => r.id === driver.id)!;
+  const ranked = ranking.filter((r) => r.count > 0).length;
   const month = summarize(monthDone);
   const open = summarize(unsettled);
   const list = history ? done : upcoming;
@@ -221,6 +229,49 @@ export default async function DriverHome({ searchParams }: { searchParams: Promi
 
           {/* Colonne d'infos */}
           <aside className="space-y-4">
+            <div className="card relative overflow-hidden p-5">
+              <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-coral-500/10 blur-2xl" />
+              <p className="text-sm font-semibold text-ink-900">Ma note clients</p>
+              {me.count ? (
+                <div className="mt-3 flex items-end justify-between gap-3">
+                  <div>
+                    <p className="text-3xl font-semibold text-ink-900">{stars(me.avg)}<span className="text-base text-ink-400">/5</span></p>
+                    <p className="mt-1 flex items-center gap-2 text-sm text-ink-500"><Stars value={me.avg ?? 0} />{me.count} avis</p>
+                  </div>
+                  <div className="rounded-xl bg-ink-900 px-4 py-2 text-center text-white">
+                    <p className="text-[0.7rem] text-ink-300">Classement</p>
+                    <p className="text-xl font-semibold">{me.rank === 1 ? "🥇" : me.rank === 2 ? "🥈" : me.rank === 3 ? "🥉" : `${me.rank}e`}<span className="text-xs text-ink-300"> / {ranked}</span></p>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-2 text-sm text-ink-500">Pas encore d&apos;avis. Après chaque trajet terminé, le client peut vous noter de 1 à 5 étoiles : les mieux notés sont en tête du classement.</p>
+              )}
+              {reviews.length > 0 && (
+                <ul className="mt-4 space-y-2 border-t border-ink-100 pt-3">
+                  {reviews.map((r) => (
+                    <li key={r.id} className="text-sm"><Stars value={r.rating} size="h-3.5 w-3.5" /><span className="ml-2 text-ink-500">{r.name}</span>{r.comment && <p className="mt-0.5 text-ink-700">“{r.comment}”</p>}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className={`card p-5 ${warnings.length ? "border-amber-200 bg-amber-50/60" : ""}`}>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-ink-900">Avertissements</p>
+                <WarningDots n={warnings.length} />
+              </div>
+              {warnings.length === 0 ? (
+                <p className="mt-2 text-sm text-ink-500">Aucun avertissement. Continuez comme ça 👍</p>
+              ) : (
+                <>
+                  <ul className="mt-3 space-y-2">
+                    {warnings.map((w) => <li key={w.id} className="rounded-lg bg-white/70 p-2 text-sm text-amber-900">{w.reason}<span className="block text-xs text-amber-700">{w.createdAt.toLocaleDateString("fr-FR", { dateStyle: "long" })}</span></li>)}
+                  </ul>
+                  <p className="mt-3 text-xs font-medium text-amber-800">Au {MAX_WARNINGS}<sup>e</sup> avertissement, votre compte sera bloqué.</p>
+                </>
+              )}
+            </div>
+
             <div className="card p-5">
               <p className="text-sm font-semibold text-ink-900">Mon compte</p>
               <dl className="mt-3 space-y-2.5 text-sm">

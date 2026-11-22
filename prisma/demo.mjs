@@ -20,7 +20,16 @@ async function main() {
   ]);
   if (!routes.length || !tours.length) { console.log("Lancez d'abord npm run setup pour créer les trajets."); return; }
 
-  let n = 0;
+  // Chaque chauffeur a un « niveau » pour que le classement de démo soit parlant
+  const level = Object.fromEntries(drivers.map((d, i) => [d.id, [4.7, 4.2, 3.6, 4.9, 3.1][i % 5]]));
+  const comments = {
+    5: ["Chauffeur adorable et très ponctuel, je recommande !", "Perfect transfer, driver was waiting with a sign.", "Excursión increíble, conductor muy amable.", "Autista puntualissimo e gentile."],
+    4: ["Très bien, véhicule propre et confortable.", "Good trip, a bit of traffic but all fine.", "Todo correcto, buen servicio."],
+    3: ["Correct, mais un peu de retard au départ.", "OK overall, the van could be cleaner."],
+    2: ["Chauffeur en retard de 30 minutes.", "Conduite un peu brusque."],
+    1: ["Le chauffeur n'est jamais venu, très déçu."],
+  };
+  let n = 0, nr = 0;
   for (let i = -45; i <= 10; i++) {
     const perDay = i > 0 ? 1 : 1 + Math.floor(Math.random() * 3);
     for (let k = 0; k < perDay; k++) {
@@ -39,7 +48,7 @@ async function main() {
       if (kind === "TRANSFER") { const t = pick(transfers); data = { transferId: t.id, time: pick(["09:30", "13:15", "17:40", "22:05"]), total: t.price, pickup: pick(hotels), flight: pick(["AT800", "FR4512", "U27713", "BA2662"]) }; }
       if (kind === "TOUR") { const t = pick(tours); data = { tourId: t.id, time: t.departure, total: t.price * pax, pickup: pick(hotels) }; }
       const completed = status === "COMPLETED" && driver;
-      await db.booking.create({
+      const booking = await db.booking.create({
         data: {
           ...data, reference: `DM-${Math.random().toString(36).slice(2, 8).toUpperCase()}`, type: kind, date, passengers: pax,
           fullName: pick(names), email: "demo@example.com", phone: "+212600000000", locale: pick(["en", "fr", "es", "it"]),
@@ -52,9 +61,14 @@ async function main() {
         },
       });
       n++;
+      if (completed && Math.random() > 0.35) {
+        const rating = Math.max(1, Math.min(5, Math.round(level[driver.id] + (Math.random() - 0.5) * 1.6)));
+        await db.review.create({ data: { bookingId: booking.id, driverId: driver.id, rating, comment: pick(comments[rating]), name: booking.fullName.split(" ")[0], locale: booking.locale, createdAt: travel } });
+        nr++;
+      }
     }
   }
-  console.log(`${n} réservations de démonstration ajoutées (références DM-…). Pour les supprimer : npm run db:demo:clear`);
+  console.log(`${n} réservations et ${nr} avis de démonstration ajoutés (références DM-…). Pour les supprimer : npm run db:demo:clear`);
 }
 
 main().finally(() => db.$disconnect());

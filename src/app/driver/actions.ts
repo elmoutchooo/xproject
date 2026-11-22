@@ -23,8 +23,11 @@ export async function driverLogin(_: { error?: string; phone?: string }, fd: For
   const password = String(fd.get("password") ?? "");
   // Forme normalisée, ou chiffres bruts pour les comptes créés avant la normalisation
   const d = phone ? await db.driver.findFirst({ where: { phone: { in: [phone, raw.replace(/\D/g, ""), ...(phone.startsWith("0") ? [`212${phone.slice(1)}`] : [])] } } }) : null;
-  if (!d || !d.active || !(await checkPassword(password, d.passwordHash))) {
+  if (!d || !(await checkPassword(password, d.passwordHash))) {
     return { error: "Numéro ou mot de passe incorrect.", phone: String(fd.get("phone") ?? "") };
+  }
+  if (!d.active) {
+    return { error: "Votre compte est bloqué. Contactez l'agence pour en savoir plus.", phone: String(fd.get("phone") ?? "") };
   }
   (await cookies()).set(DRIVER_COOKIE, await createToken(`driver:${d.id}`, DRIVER_MAX_AGE_S), sessionCookieOptions);
   redirect("/driver");
