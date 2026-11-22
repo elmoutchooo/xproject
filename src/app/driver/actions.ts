@@ -18,9 +18,11 @@ export async function currentDriver() {
 }
 
 export async function driverLogin(_: { error?: string; phone?: string }, fd: FormData): Promise<{ error?: string; phone?: string }> {
-  const phone = normalizePhone(String(fd.get("phone") ?? ""));
+  const raw = String(fd.get("phone") ?? "");
+  const phone = normalizePhone(raw);
   const password = String(fd.get("password") ?? "");
-  const d = phone ? await db.driver.findUnique({ where: { phone } }) : null;
+  // Forme normalisée, ou chiffres bruts pour les comptes créés avant la normalisation
+  const d = phone ? await db.driver.findFirst({ where: { phone: { in: [phone, raw.replace(/\D/g, ""), ...(phone.startsWith("0") ? [`212${phone.slice(1)}`] : [])] } } }) : null;
   if (!d || !d.active || !(await checkPassword(password, d.passwordHash))) {
     return { error: "Numéro ou mot de passe incorrect.", phone: String(fd.get("phone") ?? "") };
   }
