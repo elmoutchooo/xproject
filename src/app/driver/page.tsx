@@ -6,6 +6,7 @@ import { AGENCY } from "@/config/agency";
 import { LogoTile, Wordmark } from "@/components/brand/Logo";
 import Minibus from "@/components/brand/Minibus";
 import { AreaGuard } from "@/components/SessionGuard";
+import AutoRefresh from "@/components/AutoRefresh";
 import { currentDriver, driverCompleteTrip, driverLogout } from "./actions";
 import { BusIcon, CheckIcon, ClockIcon, MountainIcon, PhoneIcon, PinIcon, PlaneIcon, ShieldIcon, UsersIcon, WhatsAppIcon } from "@/components/Icons";
 
@@ -73,6 +74,7 @@ export default async function DriverHome({ searchParams }: { searchParams: Promi
   return (
     <div className="min-h-screen bg-sand-50">
       <AreaGuard area="driver" />
+      <AutoRefresh seconds={30} />
 
       {/* En-tête */}
       <header className="relative overflow-hidden bg-ink-900 text-white">

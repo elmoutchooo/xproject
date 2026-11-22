@@ -5,12 +5,14 @@ import { LogoTile, Wordmark } from "@/components/brand/Logo";
 import { AreaGuard } from "@/components/SessionGuard";
 import { ExternalIcon, LogoutIcon, SearchIcon } from "@/components/Icons";
 import AdminNav from "./AdminNav";
+import AutoRefresh from "@/components/AutoRefresh";
 
 export default async function Shell({ title, subtitle, children, action }: { title: string; subtitle?: string; children: React.ReactNode; action?: React.ReactNode }) {
   const pending = await db.booking.count({ where: { status: "PENDING" } });
   return (
     <div className="min-h-screen bg-[#f7f4f2] lg:flex">
       <AreaGuard area="admin" />
+      <AutoRefresh />
       <aside className="relative bg-ink-950 text-ink-100 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col">
         <div className="pointer-events-none absolute -left-16 top-1/3 hidden h-56 w-56 rounded-full bg-coral-500/10 blur-3xl lg:block" />
         <div className="logo-hover relative flex items-center justify-between gap-3 p-5">

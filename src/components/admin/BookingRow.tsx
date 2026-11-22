@@ -1,5 +1,6 @@
 import type { Booking, BusRoute, Driver, Tour, Transfer } from "@prisma/client";
-import { assignDriver, updateBooking } from "@/app/admin/actions";
+import { updateBooking } from "@/app/admin/actions";
+import { DriverSelect, StatusSelect } from "./BookingControls";
 import { formatPrice, tr } from "@/lib/i18n";
 import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL } from "./Shell";
 
@@ -34,14 +35,7 @@ export default function BookingRow({ b, drivers }: { b: FullBooking; drivers: Dr
       </td>
       <td className="px-4 py-3 text-center">{b.passengers}</td>
       <td className="px-4 py-3">
-        <form action={assignDriver} className="flex gap-1">
-          <input type="hidden" name="id" value={b.id} />
-          <select name="driverId" defaultValue={b.driverId ?? ""} className="max-w-[140px] rounded-lg border border-ink-200 px-2 py-1 text-xs">
-            <option value="">— Aucun —</option>
-            {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-          </select>
-          <button className="rounded-lg bg-ink-700 px-2 py-1 text-xs font-semibold text-white">OK</button>
-        </form>
+        <DriverSelect key={`${b.id}-${b.driverId}`} id={b.id} driverId={b.driverId} drivers={drivers} />
         {b.commission != null && <p className="mt-1 text-xs text-emerald-700">Commission {formatPrice(b.commission)}</p>}
       </td>
       <td className="px-4 py-3">
@@ -57,13 +51,7 @@ export default function BookingRow({ b, drivers }: { b: FullBooking; drivers: Dr
       </td>
       <td className="px-4 py-3">
         <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_COLOR[b.status]}`}>{STATUS_LABEL[b.status]}</span>
-        <form action={updateBooking} className="mt-2 flex gap-1">
-          <input type="hidden" name="id" value={b.id} />
-          <select name="status" defaultValue={b.status} className="rounded-lg border border-ink-200 px-2 py-1 text-xs">
-            {Object.entries(STATUS_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-          </select>
-          <button className="rounded-lg bg-coral-500 px-2 py-1 text-xs font-semibold text-white">OK</button>
-        </form>
+        <div className="mt-2"><StatusSelect key={`${b.id}-${b.status}`} id={b.id} status={b.status} /></div>
       </td>
     </tr>
   );

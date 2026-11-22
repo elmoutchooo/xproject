@@ -52,7 +52,9 @@ export async function assignDriver(fd: FormData) {
     const d = driverId ? await db.driver.findUnique({ where: { id: driverId } }) : null;
     commission = d ? Math.round((b.total * d.commissionRate) / 100) : null;
   }
-  await db.booking.update({ where: { id: b.id }, data: { driverId, commission } });
+  // Attribuer un chauffeur à une réservation en attente la confirme
+  const status = driverId && b.status === "PENDING" ? "CONFIRMED" : b.status;
+  await db.booking.update({ where: { id: b.id }, data: { driverId, commission, status } });
   revalidatePath("/admin", "layout");
 }
 
