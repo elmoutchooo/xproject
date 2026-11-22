@@ -8,11 +8,12 @@ import { markTab } from "@/components/SessionGuard";
 export default function DriverLoginForm({ agency }: { agency: string }) {
   const [state, action, pending] = useActionState<{ error?: string; phone?: string }, FormData>(driverLogin, {});
   return (
-    <form key={state.error ? `${state.phone}-err` : "form"} action={action} onSubmit={() => markTab("driver")} className="card w-full max-w-sm space-y-4 p-8">
+    <form key={state.error ? `${state.phone}-err` : "form"} action={action} onSubmit={() => markTab("driver")} className="card w-full max-w-sm animate-fade-up space-y-5 p-8 shadow-2xl shadow-black/30">
       <LogoTile className="h-14 w-14" />
       <div>
         <p className="text-sm font-semibold text-coral-600">{agency}</p>
-        <h1 className="text-xl font-extrabold text-ink-900">Espace chauffeurs</h1>
+        <h1 className="text-2xl font-semibold text-ink-900">Espace chauffeurs</h1>
+        <p className="mt-1 text-sm text-ink-500">Connectez-vous avec votre numéro de téléphone.</p>
       </div>
       <div>
         <label className="label" htmlFor="phone">Numéro de téléphone</label>
