@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/routes", label: "Lignes de bus" },
   { href: "/admin/transfers", label: "Transferts" },
   { href: "/admin/tours", label: "Excursions" },
+  { href: "/admin/settings", label: "Paramètres" },
 ];
 
 export default function Shell({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {

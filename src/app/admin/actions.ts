@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { completeBooking } from "@/lib/commission";
 import { hashPassword, normalizePhone } from "@/lib/password";
+import { checkAdminPassword, setAdminPassword } from "@/lib/adminAuth";
 import { createSessionToken, SESSION_COOKIE, sessionCookieOptions, verifySessionToken } from "@/lib/session";
 
 async function requireAdmin() {
@@ -17,8 +18,7 @@ const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const n = (fd: FormData, k: string) => Math.max(0, Math.round(Number(fd.get(k)) || 0));
 
 export async function login(_: { error?: string }, fd: FormData): Promise<{ error?: string }> {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected || s(fd, "password") !== expected) return { error: "Mot de passe incorrect." };
+  if (!(await checkAdminPassword(s(fd, "password")))) return { error: "Mot de passe incorrect." };
   (await cookies()).set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions);
   redirect("/admin");
 }
@@ -143,4 +143,18 @@ export async function saveTour(fd: FormData) {
   else await db.tour.create({ data });
   revalidatePath("/admin/tours");
   redirect("/admin/tours");
+}
+
+// ---- Paramètres : changer le mot de passe admin ----
+export async function changeAdminPassword(_: { error?: string; ok?: boolean }, fd: FormData): Promise<{ error?: string; ok?: boolean }> {
+  await requireAdmin();
+  const current = String(fd.get("current") ?? "");
+  const next = String(fd.get("next") ?? "");
+  const confirm = String(fd.get("confirm") ?? "");
+  if (!(await checkAdminPassword(current))) return { error: "L'ancien mot de passe est incorrect." };
+  if (next.length < 8) return { error: "Le nouveau mot de passe doit faire au moins 8 caractères." };
+  if (next !== confirm) return { error: "Les deux nouveaux mots de passe ne sont pas identiques." };
+  if (next === current) return { error: "Le nouveau mot de passe doit être différent de l'ancien." };
+  await setAdminPassword(next);
+  return { ok: true };
 }

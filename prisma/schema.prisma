@@ -98,3 +98,10 @@ model Driver {
   bookings       Booking[]
   createdAt      DateTime  @default(now())
 }
+
+// Réglages de l'application (ex. mot de passe admin chiffré)
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
