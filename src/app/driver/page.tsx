@@ -3,6 +3,7 @@ import { formatPrice, tr } from "@/lib/i18n";
 import { todayISO } from "@/lib/booking";
 import { summarize } from "@/lib/commission";
 import { LogoTile } from "@/components/brand/Logo";
+import { AreaGuard } from "@/components/SessionGuard";
 import { currentDriver, driverCompleteTrip, driverLogout } from "./actions";
 import { PhoneIcon, PinIcon, PlaneIcon, UsersIcon, WhatsAppIcon } from "@/components/Icons";
 
@@ -33,6 +34,7 @@ export default async function DriverHome({ searchParams }: { searchParams: Promi
 
   return (
     <div className="mx-auto max-w-lg pb-16">
+      <AreaGuard area="driver" />
       <header className="bg-ink-950 px-4 pb-6 pt-5 text-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

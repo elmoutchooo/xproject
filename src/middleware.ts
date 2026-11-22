@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { DRIVER_COOKIE, readToken, SESSION_COOKIE, verifySessionToken } from "@/lib/session";
+import { createToken, DRIVER_COOKIE, DRIVER_MAX_AGE_S, readToken, SESSION_COOKIE, sessionCookieOptions, sessionMaxAge } from "@/lib/session";
 
 const locales = ["en", "fr", "es", "it"];
 
@@ -9,9 +9,12 @@ export async function middleware(req: NextRequest) {
   // Dashboard admin protégé par mot de passe
   if (pathname.startsWith("/admin")) {
     if (pathname === "/admin/login") return NextResponse.next();
-    const ok = await verifySessionToken(req.cookies.get(SESSION_COOKIE)?.value);
-    if (!ok) return NextResponse.redirect(new URL("/admin/login", req.url));
-    return NextResponse.next();
+    const subject = await readToken(req.cookies.get(SESSION_COOKIE)?.value);
+    if (subject !== "admin") return NextResponse.redirect(new URL("/admin/login", req.url));
+    // Chaque page visitée repousse la déconnexion automatique
+    const res = NextResponse.next();
+    res.cookies.set(SESSION_COOKIE, await createToken("admin", sessionMaxAge), sessionCookieOptions);
+    return res;
   }
 
   // Espace chauffeurs
@@ -19,7 +22,9 @@ export async function middleware(req: NextRequest) {
     if (pathname === "/driver/login") return NextResponse.next();
     const subject = await readToken(req.cookies.get(DRIVER_COOKIE)?.value);
     if (!subject?.startsWith("driver:")) return NextResponse.redirect(new URL("/driver/login", req.url));
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.cookies.set(DRIVER_COOKIE, await createToken(subject, DRIVER_MAX_AGE_S), sessionCookieOptions);
+    return res;
   }
 
   // Site public : toujours préfixé par la langue (/en, /fr, /es, /it)

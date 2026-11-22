@@ -4,6 +4,7 @@ import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { LeaveGuard } from "@/components/SessionGuard";
 import { getDict, isLocale, locales } from "@/lib/i18n";
 import { AGENCY } from "@/config/agency";
 import { pageMeta, SITE_URL } from "@/lib/seo";
@@ -48,6 +49,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         <main className="flex-1">{children}</main>
         <Footer locale={locale} t={t} />
         <WhatsAppButton />
+        <LeaveGuard />
       </body>
     </html>
   );

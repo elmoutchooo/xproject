@@ -2,8 +2,9 @@
 // Jeton : "<sujet>.<expiration>.<signature>" ; sujet = "admin" ou "driver:<id>"
 export const SESSION_COOKIE = "admin_session";
 export const DRIVER_COOKIE = "driver_session";
-const MAX_AGE_S = 60 * 60 * 12;
-export const DRIVER_MAX_AGE_S = 60 * 60 * 24 * 30;
+// Déconnexion automatique après inactivité (la session est prolongée à chaque page visitée)
+const MAX_AGE_S = 60 * 30; // admin : 30 minutes
+export const DRIVER_MAX_AGE_S = 60 * 60 * 2; // chauffeur : 2 heures
 
 async function hmac(data: string) {
   const secret = process.env.AUTH_SECRET || "dev-secret-change-me";
@@ -33,3 +34,11 @@ export async function readToken(token?: string) {
 export const createSessionToken = () => createToken("admin");
 export const verifySessionToken = async (token?: string) => (await readToken(token)) === "admin";
 export const sessionMaxAge = MAX_AGE_S;
+
+/** Options des cookies de session : pas de durée fixe, ils disparaissent à la fermeture du navigateur. */
+export const sessionCookieOptions = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+};

@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { completeBooking } from "@/lib/commission";
 import { hashPassword, normalizePhone } from "@/lib/password";
-import { createSessionToken, SESSION_COOKIE, sessionMaxAge, verifySessionToken } from "@/lib/session";
+import { createSessionToken, SESSION_COOKIE, sessionCookieOptions, verifySessionToken } from "@/lib/session";
 
 async function requireAdmin() {
   const ok = await verifySessionToken((await cookies()).get(SESSION_COOKIE)?.value);
@@ -19,9 +19,7 @@ const n = (fd: FormData, k: string) => Math.max(0, Math.round(Number(fd.get(k)) 
 export async function login(_: { error?: string }, fd: FormData): Promise<{ error?: string }> {
   const expected = process.env.ADMIN_PASSWORD;
   if (!expected || s(fd, "password") !== expected) return { error: "Mot de passe incorrect." };
-  (await cookies()).set(SESSION_COOKIE, await createSessionToken(), {
-    httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: sessionMaxAge, path: "/",
-  });
+  (await cookies()).set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions);
   redirect("/admin");
 }
 

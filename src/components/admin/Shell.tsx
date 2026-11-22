@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { logout } from "@/app/admin/actions";
 import { LogoTile, Wordmark } from "@/components/brand/Logo";
+import { AreaGuard } from "@/components/SessionGuard";
 
 const links = [
   { href: "/admin", label: "Tableau de bord" },
@@ -14,6 +15,7 @@ const links = [
 export default function Shell({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
   return (
     <div className="lg:flex">
+      <AreaGuard area="admin" />
       <aside className="border-b border-ink-200 bg-ink-950 text-ink-100 lg:min-h-screen lg:w-60 lg:border-b-0">
         <div className="logo-hover flex items-center justify-between gap-3 p-5 lg:block">
           <div className="flex items-center gap-2.5"><LogoTile className="h-9 w-9" /><Wordmark dark compact /></div>
@@ -23,8 +25,8 @@ export default function Shell({ title, children, action }: { title: string; chil
           {links.map((l) => (
             <Link key={l.href} href={l.href} className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">{l.label}</Link>
           ))}
-          <Link href="/driver" target="_blank" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Espace chauffeurs ↗</Link>
-          <Link href="/fr" target="_blank" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Voir le site ↗</Link>
+          <Link href="/driver" target="_blank" rel="noopener noreferrer" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Espace chauffeurs ↗</Link>
+          <Link href="/fr" target="_blank" rel="noopener noreferrer" className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/10 hover:text-white">Voir le site ↗</Link>
           <form action={logout}><button className="w-full shrink-0 rounded-lg px-3 py-2 text-left text-sm font-medium text-ink-300 hover:bg-white/10 hover:text-white">Déconnexion</button></form>
         </nav>
       </aside>

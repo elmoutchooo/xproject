@@ -3,11 +3,12 @@
 import { useActionState } from "react";
 import { driverLogin } from "@/app/driver/actions";
 import { LogoTile } from "@/components/brand/Logo";
+import { markTab } from "@/components/SessionGuard";
 
 export default function DriverLoginForm({ agency }: { agency: string }) {
   const [state, action, pending] = useActionState<{ error?: string; phone?: string }, FormData>(driverLogin, {});
   return (
-    <form key={state.error ? `${state.phone}-err` : "form"} action={action} className="card w-full max-w-sm space-y-4 p-8">
+    <form key={state.error ? `${state.phone}-err` : "form"} action={action} onSubmit={() => markTab("driver")} className="card w-full max-w-sm space-y-4 p-8">
       <LogoTile className="h-14 w-14" />
       <div>
         <p className="text-sm font-semibold text-coral-600">{agency}</p>

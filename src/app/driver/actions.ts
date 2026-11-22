@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { checkPassword, normalizePhone } from "@/lib/password";
-import { createToken, DRIVER_COOKIE, DRIVER_MAX_AGE_S, readToken } from "@/lib/session";
+import { createToken, DRIVER_COOKIE, DRIVER_MAX_AGE_S, readToken, sessionCookieOptions } from "@/lib/session";
 import { completeBooking } from "@/lib/commission";
 
 /** Chauffeur connecté (ou redirection vers la page de connexion). */
@@ -24,9 +24,7 @@ export async function driverLogin(_: { error?: string; phone?: string }, fd: For
   if (!d || !d.active || !(await checkPassword(password, d.passwordHash))) {
     return { error: "Numéro ou mot de passe incorrect.", phone: String(fd.get("phone") ?? "") };
   }
-  (await cookies()).set(DRIVER_COOKIE, await createToken(`driver:${d.id}`, DRIVER_MAX_AGE_S), {
-    httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: DRIVER_MAX_AGE_S, path: "/",
-  });
+  (await cookies()).set(DRIVER_COOKIE, await createToken(`driver:${d.id}`, DRIVER_MAX_AGE_S), sessionCookieOptions);
   redirect("/driver");
 }
 

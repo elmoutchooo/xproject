@@ -3,11 +3,12 @@
 import { useActionState } from "react";
 import { login } from "@/app/admin/actions";
 import { LogoTile } from "@/components/brand/Logo";
+import { markTab } from "@/components/SessionGuard";
 
 export default function LoginForm() {
   const [state, action, pending] = useActionState<{ error?: string }, FormData>(login, {});
   return (
-    <form action={action} className="card w-full max-w-sm space-y-4 p-8">
+    <form action={action} onSubmit={() => markTab("admin")} className="card w-full max-w-sm space-y-4 p-8">
       <LogoTile className="h-14 w-14" />
       <h1 className="text-xl font-semibold text-ink-900">Connexion admin</h1>
       <div>
