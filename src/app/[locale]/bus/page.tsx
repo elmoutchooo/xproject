@@ -63,38 +63,38 @@ export default async function BusPage({ params, searchParams }: { params: Promis
 
         <nav aria-label={t.bus.allRoutes} className="mt-6 flex flex-wrap gap-2">
           {all.map((r) => (
-            <Link key={r.id} href={`/${locale}/bus/${routeSlug(r.fromCity, r.toCity)}`} className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-brand-50 hover:text-brand-700">
+            <Link key={r.id} href={`/${locale}/bus/${routeSlug(r.fromCity, r.toCity)}`} className="rounded-full bg-ink-100 px-3 py-1.5 text-xs font-semibold text-ink-600 hover:bg-coral-50 hover:text-coral-600">
               {r.fromCity} → {r.toCity}
             </Link>
           ))}
         </nav>
 
-        <p className="mt-8 text-sm font-medium capitalize text-slate-500">{formatDate(date, locale)}</p>
+        <p className="mt-8 text-sm font-medium capitalize text-ink-500">{formatDate(date, locale)}</p>
         <div className="mt-3 space-y-3">
-          {withSeats.length === 0 && <p className="card p-8 text-center text-slate-500">{t.common.noResults}</p>}
+          {withSeats.length === 0 && <p className="card p-8 text-center text-ink-500">{t.common.noResults}</p>}
           {withSeats.map((r) => {
             const enough = r.left >= pax;
             return (
               <div key={r.id} className="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
                 <div className="flex flex-1 items-center gap-4">
                   <div className="text-center">
-                    <p className="text-xl font-bold text-slate-900">{r.departure}</p>
-                    <p className="text-sm text-slate-500">{r.fromCity}</p>
+                    <p className="text-xl font-bold text-ink-900">{r.departure}</p>
+                    <p className="text-sm text-ink-500">{r.fromCity}</p>
                   </div>
-                  <div className="flex flex-1 flex-col items-center px-2 text-xs text-slate-400">
+                  <div className="flex flex-1 flex-col items-center px-2 text-xs text-ink-400">
                     <span className="flex items-center gap-1"><ClockIcon className="h-3.5 w-3.5" />{Math.floor(r.durationMin / 60)}{t.common.hours}{r.durationMin % 60 ? String(r.durationMin % 60).padStart(2, "0") : ""}</span>
-                    <span className="my-1 h-px w-full bg-slate-200" />
+                    <span className="my-1 h-px w-full bg-ink-200" />
                     <span>{t.bus.daily}</span>
                   </div>
                   <div className="text-center">
-                    <p className="text-xl font-bold text-slate-900">{addMinutes(r.departure, r.durationMin)}</p>
-                    <p className="text-sm text-slate-500">{r.toCity}</p>
+                    <p className="text-xl font-bold text-ink-900">{addMinutes(r.departure, r.durationMin)}</p>
+                    <p className="text-sm text-ink-500">{r.toCity}</p>
                   </div>
                 </div>
-                <Link href={`/${locale}/bus/${routeSlug(r.fromCity, r.toCity)}`} className="text-xs font-medium text-brand-700 hover:underline sm:hidden">{t.common.details}</Link>
-                <div className="flex items-center justify-between gap-6 border-t border-slate-100 pt-4 sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
+                <Link href={`/${locale}/bus/${routeSlug(r.fromCity, r.toCity)}`} className="text-xs font-medium text-coral-600 hover:underline sm:hidden">{t.common.details}</Link>
+                <div className="flex items-center justify-between gap-6 border-t border-ink-100 pt-4 sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
                   <div>
-                    <p className="text-lg font-bold text-slate-900">{formatPrice(r.price)}</p>
+                    <p className="text-lg font-bold text-ink-900">{formatPrice(r.price)}</p>
                     <p className={`text-xs font-medium ${r.left === 0 ? "text-rose-600" : r.left < 10 ? "text-amber-600" : "text-emerald-600"}`}>
                       {r.left === 0 ? t.common.soldOut : `${r.left} ${t.common.seatsLeft}`}
                     </p>

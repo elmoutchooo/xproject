@@ -53,7 +53,7 @@ export default function SearchBox({ locale, t, cities, airports, today, labels }
       <div className="flex gap-1 overflow-x-auto p-1" role="tablist">
         {tabs.map((x) => (
           <button key={x.id} type="button" role="tab" aria-selected={tab === x.id} onClick={() => setTab(x.id)}
-            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${tab === x.id ? "bg-brand-700 text-white" : "text-slate-600 hover:bg-slate-100"}`}>
+            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${tab === x.id ? "bg-coral-500 text-white" : "text-ink-600 hover:bg-ink-100"}`}>
             {x.icon}{x.label}
           </button>
         ))}

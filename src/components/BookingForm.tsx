@@ -35,7 +35,7 @@ export default function BookingForm(p: Props) {
       <input type="hidden" name="id" value={p.id} />
 
       <section className="card space-y-4 p-6">
-        <h2 className="text-lg font-bold text-slate-900">{t.summary}</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t.summary}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="label" htmlFor="date">{t.date} *</label>
@@ -67,7 +67,7 @@ export default function BookingForm(p: Props) {
       </section>
 
       <section className="card space-y-4 p-6">
-        <h2 className="text-lg font-bold text-slate-900">{t.details}</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t.details}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label className="label" htmlFor="fullName">{t.fullName} *</label>
@@ -89,16 +89,16 @@ export default function BookingForm(p: Props) {
       </section>
 
       <section className="card space-y-3 p-6">
-        <h2 className="text-lg font-bold text-slate-900">{t.payment}</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t.payment}</h2>
         {[
           { v: "CASH", title: t.payCash, text: t.payCashText },
           { v: "BANK_TRANSFER", title: t.payTransfer, text: t.payTransferText },
         ].map((o) => (
-          <label key={o.v} className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${payment === o.v ? "border-brand-500 bg-brand-50" : "border-slate-200 hover:bg-slate-50"}`}>
-            <input type="radio" name="payment" value={o.v} checked={payment === o.v} onChange={() => setPayment(o.v)} className="mt-1 accent-brand-700" />
+          <label key={o.v} className={`flex cursor-pointer gap-3 rounded-xl border p-4 transition ${payment === o.v ? "border-coral-500 bg-coral-50" : "border-ink-200 hover:bg-ink-50"}`}>
+            <input type="radio" name="payment" value={o.v} checked={payment === o.v} onChange={() => setPayment(o.v)} className="mt-1 accent-coral-500" />
             <span>
-              <span className="block font-semibold text-slate-900">{o.title}</span>
-              <span className="block text-sm text-slate-600">{o.text}</span>
+              <span className="block font-semibold text-ink-900">{o.title}</span>
+              <span className="block text-sm text-ink-600">{o.text}</span>
             </span>
           </label>
         ))}
@@ -106,12 +106,12 @@ export default function BookingForm(p: Props) {
 
       <div className="card space-y-4 p-6">
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-slate-600">{p.totalLabel}</span>
-          <span className="text-2xl font-extrabold text-slate-900">{formatPrice(total)}</span>
+          <span className="font-semibold text-ink-600">{p.totalLabel}</span>
+          <span className="text-2xl font-extrabold text-ink-900">{formatPrice(total)}</span>
         </div>
-        <label className="flex items-start gap-2 text-sm text-slate-600">
-          <input type="checkbox" name="accept" defaultChecked={v.accept === "on"} className="mt-0.5 accent-brand-700" required />
-          <span>{t.accept} (<Link href={`/${p.locale}/terms`} target="_blank" className="text-brand-700 underline">{p.termsLabel}</Link>)</span>
+        <label className="flex items-start gap-2 text-sm text-ink-600">
+          <input type="checkbox" name="accept" defaultChecked={v.accept === "on"} className="mt-0.5 accent-coral-500" required />
+          <span>{t.accept} (<Link href={`/${p.locale}/terms`} target="_blank" className="text-coral-600 underline">{p.termsLabel}</Link>)</span>
         </label>
         {state.error && <p role="alert" className="rounded-xl bg-rose-50 p-3 text-sm font-medium text-rose-700">{state.error}</p>}
         <button disabled={pending} className="btn-primary w-full py-3.5 text-base">{pending ? "…" : t.confirm}</button>

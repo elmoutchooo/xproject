@@ -24,7 +24,7 @@ export default async function RoutesPage() {
   const cols = "grid gap-2 sm:grid-cols-4 lg:grid-cols-[1fr_1fr_110px_100px_100px_90px_80px_auto] lg:items-center";
   return (
     <Shell title="Lignes de bus">
-      <div className={`${cols} mb-2 hidden px-4 text-xs font-semibold uppercase tracking-wide text-slate-500 lg:grid`}>
+      <div className={`${cols} mb-2 hidden px-4 text-xs font-semibold uppercase tracking-wide text-ink-500 lg:grid`}>
         <span>Départ</span><span>Arrivée</span><span>Heure</span><span>Durée (min)</span><span>Prix (MAD)</span><span>Places</span><span>Actif</span><span />
       </div>
       <div className="space-y-2">

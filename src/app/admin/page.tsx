@@ -27,10 +27,10 @@ export default async function Dashboard() {
 
   const stats = [
     { label: "À confirmer", value: String(pending), href: "/admin/bookings?status=PENDING", tone: "text-amber-600" },
-    { label: "Trajets aujourd'hui", value: String(todayTrips.length), href: `/admin/bookings?date=${today}`, tone: "text-brand-700" },
-    { label: "Réservations ce mois", value: String(monthAgg._count), href: "/admin/bookings", tone: "text-slate-900" },
+    { label: "Trajets aujourd'hui", value: String(todayTrips.length), href: `/admin/bookings?date=${today}`, tone: "text-coral-600" },
+    { label: "Réservations ce mois", value: String(monthAgg._count), href: "/admin/bookings", tone: "text-ink-900" },
     { label: "Chiffre d'affaires du mois", value: formatPrice(monthAgg._sum.total ?? 0), href: "/admin/bookings", tone: "text-emerald-700" },
-    { label: "Sans chauffeur", value: String(unassigned), href: "/admin/bookings?driver=none", tone: unassigned ? "text-rose-600" : "text-slate-900" },
+    { label: "Sans chauffeur", value: String(unassigned), href: "/admin/bookings?driver=none", tone: unassigned ? "text-rose-600" : "text-ink-900" },
     { label: "Commissions chauffeurs (mois)", value: formatPrice(commAgg._sum.commission ?? 0), href: "/admin/drivers", tone: "text-emerald-700" },
     { label: "Reste à encaisser", value: formatPrice(unpaidAgg._sum.total ?? 0), href: "/admin/bookings?paid=false", tone: "text-rose-600" },
   ];
@@ -41,7 +41,7 @@ export default async function Dashboard() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((s) => (
           <Link key={s.label} href={s.href} className="card p-5 transition hover:shadow-md">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{s.label}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-500">{s.label}</p>
             <p className={`mt-2 text-2xl font-extrabold ${s.tone}`}>{s.value}</p>
           </Link>
         ))}
@@ -52,7 +52,7 @@ export default async function Dashboard() {
           const g = byType.find((x) => x.type === k);
           return (
             <div key={k} className="card p-5">
-              <p className="text-sm font-semibold text-slate-600">{typeLabel[k]} (ce mois)</p>
+              <p className="text-sm font-semibold text-ink-600">{typeLabel[k]} (ce mois)</p>
               <p className="mt-1 text-lg font-bold">{g?._count ?? 0} réservations · {formatPrice(g?._sum.total ?? 0)}</p>
             </div>
           );

@@ -19,38 +19,38 @@ export default function BookingRow({ b, drivers }: { b: FullBooking; drivers: Dr
     <tr className="align-top">
       <td className="px-4 py-3">
         <p className="font-mono text-xs font-bold">{b.reference}</p>
-        <p className="text-xs text-slate-400">{b.createdAt.toLocaleDateString("fr-FR")}</p>
+        <p className="text-xs text-ink-400">{b.createdAt.toLocaleDateString("fr-FR")}</p>
       </td>
       <td className="px-4 py-3">
         <p className="font-medium">{b.date}{b.time ? ` · ${b.time}` : ""}</p>
-        <p className="text-xs text-slate-500">{TYPE_LABEL[b.type]} · {tripLabel(b)}</p>
-        {(b.pickup || b.flight) && <p className="text-xs text-slate-500">{[b.pickup, b.flight && `Vol ${b.flight}`].filter(Boolean).join(" · ")}</p>}
-        {b.notes && <p className="mt-1 max-w-xs text-xs italic text-slate-500">“{b.notes}”</p>}
+        <p className="text-xs text-ink-500">{TYPE_LABEL[b.type]} · {tripLabel(b)}</p>
+        {(b.pickup || b.flight) && <p className="text-xs text-ink-500">{[b.pickup, b.flight && `Vol ${b.flight}`].filter(Boolean).join(" · ")}</p>}
+        {b.notes && <p className="mt-1 max-w-xs text-xs italic text-ink-500">“{b.notes}”</p>}
       </td>
       <td className="px-4 py-3">
         <p className="font-medium">{b.fullName}</p>
         <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-700 hover:underline">{b.phone}</a>
-        <p className="text-xs text-slate-500">{b.email} · {b.locale.toUpperCase()}</p>
+        <p className="text-xs text-ink-500">{b.email} · {b.locale.toUpperCase()}</p>
       </td>
       <td className="px-4 py-3 text-center">{b.passengers}</td>
       <td className="px-4 py-3">
         <form action={assignDriver} className="flex gap-1">
           <input type="hidden" name="id" value={b.id} />
-          <select name="driverId" defaultValue={b.driverId ?? ""} className="max-w-[140px] rounded-lg border border-slate-200 px-2 py-1 text-xs">
+          <select name="driverId" defaultValue={b.driverId ?? ""} className="max-w-[140px] rounded-lg border border-ink-200 px-2 py-1 text-xs">
             <option value="">— Aucun —</option>
             {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
-          <button className="rounded-lg bg-slate-700 px-2 py-1 text-xs font-semibold text-white">OK</button>
+          <button className="rounded-lg bg-ink-700 px-2 py-1 text-xs font-semibold text-white">OK</button>
         </form>
         {b.commission != null && <p className="mt-1 text-xs text-emerald-700">Commission {formatPrice(b.commission)}</p>}
       </td>
       <td className="px-4 py-3">
         <p className="font-semibold">{formatPrice(b.total)}</p>
-        <p className="text-xs text-slate-500">{b.payment === "CASH" ? "Espèces" : "Virement"}</p>
+        <p className="text-xs text-ink-500">{b.payment === "CASH" ? "Espèces" : "Virement"}</p>
         <form action={updateBooking}>
           <input type="hidden" name="id" value={b.id} />
           <input type="hidden" name="paid" value={String(!b.paid)} />
-          <button className={`mt-1 rounded-full px-2 py-0.5 text-xs font-semibold ${b.paid ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600"}`}>
+          <button className={`mt-1 rounded-full px-2 py-0.5 text-xs font-semibold ${b.paid ? "bg-emerald-100 text-emerald-800" : "bg-ink-100 text-ink-600"}`}>
             {b.paid ? "✓ Payée" : "Non payée"}
           </button>
         </form>
@@ -59,10 +59,10 @@ export default function BookingRow({ b, drivers }: { b: FullBooking; drivers: Dr
         <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_COLOR[b.status]}`}>{STATUS_LABEL[b.status]}</span>
         <form action={updateBooking} className="mt-2 flex gap-1">
           <input type="hidden" name="id" value={b.id} />
-          <select name="status" defaultValue={b.status} className="rounded-lg border border-slate-200 px-2 py-1 text-xs">
+          <select name="status" defaultValue={b.status} className="rounded-lg border border-ink-200 px-2 py-1 text-xs">
             {Object.entries(STATUS_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
-          <button className="rounded-lg bg-brand-700 px-2 py-1 text-xs font-semibold text-white">OK</button>
+          <button className="rounded-lg bg-coral-500 px-2 py-1 text-xs font-semibold text-white">OK</button>
         </form>
       </td>
     </tr>
@@ -73,12 +73,12 @@ export function BookingTable({ bookings, drivers }: { bookings: FullBooking[]; d
   return (
     <div className="card overflow-x-auto">
       <table className="w-full min-w-[1050px] text-left text-sm">
-        <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
+        <thead className="border-b border-ink-100 text-xs uppercase tracking-wide text-ink-500">
           <tr><th className="px-4 py-3">Réf.</th><th className="px-4 py-3">Trajet</th><th className="px-4 py-3">Client</th><th className="px-4 py-3 text-center">Pers.</th><th className="px-4 py-3">Chauffeur</th><th className="px-4 py-3">Montant</th><th className="px-4 py-3">Statut</th></tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-ink-100">
           {bookings.map((b) => <BookingRow key={b.id} b={b} drivers={drivers} />)}
-          {bookings.length === 0 && <tr><td colSpan={7} className="px-4 py-10 text-center text-slate-400">Aucune réservation.</td></tr>}
+          {bookings.length === 0 && <tr><td colSpan={7} className="px-4 py-10 text-center text-ink-400">Aucune réservation.</td></tr>}
         </tbody>
       </table>
     </div>

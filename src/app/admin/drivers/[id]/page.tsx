@@ -40,7 +40,7 @@ export default async function DriverDetail({ params }: { params: Promise<{ id: s
         </div>
       </div>
       {open.trips > 0 && (
-        <p className="mt-3 text-sm text-slate-500">
+        <p className="mt-3 text-sm text-ink-500">
           Détail non réglé : {open.trips} trajet(s) · commission sur espèces due par le chauffeur {formatPrice(open.driverOwes)} · part chauffeur sur virements due par l&apos;agence {formatPrice(open.agencyOwes)}.
         </p>
       )}
@@ -48,23 +48,23 @@ export default async function DriverDetail({ params }: { params: Promise<{ id: s
       <h2 className="mb-3 mt-10 text-lg font-bold">Trajets</h2>
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-500">
+          <thead className="border-b border-ink-100 text-xs uppercase tracking-wide text-ink-500">
             <tr><th className="px-4 py-3">Date</th><th className="px-4 py-3">Trajet</th><th className="px-4 py-3">Paiement</th><th className="px-4 py-3">Montant</th><th className="px-4 py-3">Commission</th><th className="px-4 py-3">Statut</th></tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-ink-100">
             {d.bookings.map((b) => (
               <tr key={b.id}>
-                <td className="px-4 py-3">{b.date}{b.time ? ` · ${b.time}` : ""}<p className="font-mono text-xs text-slate-400">{b.reference}</p></td>
+                <td className="px-4 py-3">{b.date}{b.time ? ` · ${b.time}` : ""}<p className="font-mono text-xs text-ink-400">{b.reference}</p></td>
                 <td className="px-4 py-3">{tripLabel(b)}</td>
                 <td className="px-4 py-3">{b.payment === "CASH" ? "Espèces" : "Virement"}</td>
                 <td className="px-4 py-3 font-semibold">{formatPrice(b.total)}</td>
                 <td className="px-4 py-3">{b.commission != null ? formatPrice(b.commission) : "—"}</td>
                 <td className="px-4 py-3 text-xs">
-                  {b.status === "COMPLETED" ? (b.settled ? <span className="text-slate-400">Terminé · réglé</span> : <span className="font-semibold text-amber-700">Terminé · à régler</span>) : b.status === "CANCELLED" ? "Annulé" : "À venir"}
+                  {b.status === "COMPLETED" ? (b.settled ? <span className="text-ink-400">Terminé · réglé</span> : <span className="font-semibold text-amber-700">Terminé · à régler</span>) : b.status === "CANCELLED" ? "Annulé" : "À venir"}
                 </td>
               </tr>
             ))}
-            {d.bookings.length === 0 && <tr><td colSpan={6} className="px-4 py-10 text-center text-slate-400">Aucun trajet attribué.</td></tr>}
+            {d.bookings.length === 0 && <tr><td colSpan={6} className="px-4 py-10 text-center text-ink-400">Aucun trajet attribué.</td></tr>}
           </tbody>
         </table>
       </div>

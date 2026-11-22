@@ -50,11 +50,11 @@ export default async function BookPage({ params, searchParams }: { params: Promi
 
   return (
     <div className="container-x max-w-3xl pt-10">
-      <Link href={`/${locale}`} className="text-sm font-medium text-brand-700 hover:underline">← {t.common.back}</Link>
-      <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900">{t.book.title}</h1>
-      <div className="mt-6 rounded-2xl bg-brand-900 p-6 text-white">
+      <Link href={`/${locale}`} className="text-sm font-medium text-coral-600 hover:underline">← {t.common.back}</Link>
+      <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-ink-900">{t.book.title}</h1>
+      <div className="mt-6 rounded-2xl bg-ink-900 p-6 text-white">
         <p className="text-xl font-bold">{title}</p>
-        <p className="mt-1 text-sm text-brand-200">{sub}</p>
+        <p className="mt-1 text-sm text-ink-200">{sub}</p>
         <p className="mt-3 text-sm"><span className="text-lg font-bold">{formatPrice(unitPrice)}</span> {perVehicle ? t.common.perVehicle : t.common.perPerson}</p>
       </div>
       <div className="mt-6">

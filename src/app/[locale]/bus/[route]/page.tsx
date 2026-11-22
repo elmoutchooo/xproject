@@ -54,27 +54,27 @@ export default async function BusRoutePage({ params }: P) {
         { name: title, url },
       ])} />
 
-      <nav aria-label="Breadcrumb" className="text-sm text-slate-500">
-        <Link href={`/${locale}`} className="hover:text-brand-700">{t.nav.home}</Link> / <Link href={`/${locale}/bus`} className="hover:text-brand-700">{t.nav.bus}</Link> / <span className="text-slate-700">{r.fromCity} → {r.toCity}</span>
+      <nav aria-label="Breadcrumb" className="text-sm text-ink-500">
+        <Link href={`/${locale}`} className="hover:text-coral-600">{t.nav.home}</Link> / <Link href={`/${locale}/bus`} className="hover:text-coral-600">{t.nav.bus}</Link> / <span className="text-ink-700">{r.fromCity} → {r.toCity}</span>
       </nav>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px]">
         <div>
-          <h1 className="flex items-center gap-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-700 text-white"><BusIcon className="h-6 w-6" /></span>{title}
+          <h1 className="flex items-center gap-3 text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-coral-500 text-white"><BusIcon className="h-6 w-6" /></span>{title}
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-slate-600">{fill(t.bus.routeDesc, vars)}</p>
+          <p className="mt-5 text-lg leading-relaxed text-ink-600">{fill(t.bus.routeDesc, vars)}</p>
 
           <div className="mt-8 space-y-3">
             {matches.map((m) => (
               <div key={m.id} className="card flex items-center gap-4 p-5">
-                <div className="text-center"><p className="text-xl font-bold">{m.departure}</p><p className="text-sm text-slate-500">{m.fromCity}</p></div>
-                <div className="flex flex-1 flex-col items-center text-xs text-slate-400">
+                <div className="text-center"><p className="text-xl font-bold">{m.departure}</p><p className="text-sm text-ink-500">{m.fromCity}</p></div>
+                <div className="flex flex-1 flex-col items-center text-xs text-ink-400">
                   <span className="flex items-center gap-1"><ClockIcon className="h-3.5 w-3.5" />{dur(m.durationMin)}</span>
-                  <span className="my-1 h-px w-full bg-slate-200" />
+                  <span className="my-1 h-px w-full bg-ink-200" />
                   <span>{t.bus.daily}</span>
                 </div>
-                <div className="text-center"><p className="text-xl font-bold">{addMinutes(m.departure, m.durationMin)}</p><p className="text-sm text-slate-500">{m.toCity}</p></div>
+                <div className="text-center"><p className="text-xl font-bold">{addMinutes(m.departure, m.durationMin)}</p><p className="text-sm text-ink-500">{m.toCity}</p></div>
                 <p className="ml-4 hidden text-lg font-bold sm:block">{formatPrice(m.price)}</p>
               </div>
             ))}
@@ -82,10 +82,10 @@ export default async function BusRoutePage({ params }: P) {
 
           {others.length > 0 && (
             <>
-              <h2 className="mt-10 text-lg font-bold text-slate-900">{t.bus.otherRoutes}</h2>
+              <h2 className="mt-10 text-lg font-bold text-ink-900">{t.bus.otherRoutes}</h2>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {others.map((o) => (
-                  <li key={o.id}><Link href={`/${locale}/bus/${routeSlug(o.fromCity, o.toCity)}`} className="block rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700">{o.fromCity} → {o.toCity}</Link></li>
+                  <li key={o.id}><Link href={`/${locale}/bus/${routeSlug(o.fromCity, o.toCity)}`} className="block rounded-full bg-ink-100 px-3 py-1.5 text-sm font-medium text-ink-700 hover:bg-coral-50 hover:text-coral-600">{o.fromCity} → {o.toCity}</Link></li>
                 ))}
               </ul>
             </>
@@ -96,7 +96,7 @@ export default async function BusRoutePage({ params }: P) {
           <form action={`/${locale}/bus`} className="card sticky top-24 space-y-4 p-6">
             <input type="hidden" name="from" value={r.fromCity} />
             <input type="hidden" name="to" value={r.toCity} />
-            <p className="font-bold text-slate-900">{t.bus.chooseDate}</p>
+            <p className="font-bold text-ink-900">{t.bus.chooseDate}</p>
             <div>
               <label className="label" htmlFor="date">{t.book.date}</label>
               <input id="date" name="date" type="date" min={today} defaultValue={today} className="input" required />

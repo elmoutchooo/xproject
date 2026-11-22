@@ -2,14 +2,15 @@ import Link from "next/link";
 import type { Dict, Locale } from "@/lib/i18n";
 import { AGENCY } from "@/config/agency";
 import { MailIcon, PhoneIcon, PinIcon } from "./Icons";
+import { LogoTile, Wordmark } from "./brand/Logo";
 
 export default function Footer({ locale, t }: { locale: Locale; t: Dict }) {
   return (
-    <footer className="mt-20 bg-brand-950 text-brand-100">
+    <footer className="mt-24 bg-ink-900 text-ink-200">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <p className="text-lg font-bold text-white">{AGENCY.name}</p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-brand-200">{t.footer.about}</p>
+          <div className="logo-hover flex items-center gap-3"><LogoTile className="h-12 w-12" /><Wordmark dark /></div>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-300">{t.footer.about}</p>
         </div>
         <div>
           <p className="text-sm font-semibold text-white">{t.footer.links}</p>
@@ -31,8 +32,8 @@ export default function Footer({ locale, t }: { locale: Locale; t: Dict }) {
           </ul>
         </div>
       </div>
-      <div className="border-t border-brand-900">
-        <p className="container-x py-5 text-xs text-brand-300">© {new Date().getFullYear()} {AGENCY.name}. {t.footer.rights}</p>
+      <div className="border-t border-ink-800">
+        <p className="container-x py-5 text-xs text-ink-400">© {new Date().getFullYear()} {AGENCY.name}. {t.footer.rights}</p>
       </div>
     </footer>
   );

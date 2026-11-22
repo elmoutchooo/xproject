@@ -1,7 +1,7 @@
 // Informations de l'agence : modifiez ce fichier avec vos vraies coordonnées.
 export const AGENCY = {
-  name: "Atlas Transport",
-  tagline: "Morocco Transport & Tours",
+  name: "CS Tours",
+  tagline: "Transport touristique",
   phone: "+212 600 000 000",
   whatsapp: "212600000000", // sans "+" ni espaces, pour le lien wa.me
   email: "contact@example.com",

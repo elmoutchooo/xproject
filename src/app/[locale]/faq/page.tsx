@@ -24,10 +24,10 @@ export default async function FaqPage({ params }: P) {
       <div className="container-x max-w-3xl space-y-3">
         {t.faq.items.map((i) => (
           <details key={i.q} className="card group p-5 open:shadow-md">
-            <summary className="cursor-pointer list-none font-semibold text-slate-900 marker:hidden">
-              <span className="flex items-center justify-between gap-4">{i.q}<span className="text-brand-600 transition group-open:rotate-45">+</span></span>
+            <summary className="cursor-pointer list-none font-semibold text-ink-900 marker:hidden">
+              <span className="flex items-center justify-between gap-4">{i.q}<span className="text-coral-600 transition group-open:rotate-45">+</span></span>
             </summary>
-            <p className="mt-3 text-slate-600">{i.a}</p>
+            <p className="mt-3 text-ink-600">{i.a}</p>
           </details>
         ))}
       </div>

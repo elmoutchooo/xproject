@@ -13,7 +13,7 @@ export function newReference() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let s = "";
   for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
-  return `AT-${s}`;
+  return `CS-${s}`;
 }
 
 // Places restantes sur une ligne de bus pour une date donnée

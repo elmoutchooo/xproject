@@ -18,7 +18,7 @@ export default async function Page({ params }: P) {
     <>
       <PageHeader title={t.legal.privacy} />
       <div className="container-x max-w-3xl">
-        <ol className="list-decimal space-y-3 pl-5 text-slate-700">
+        <ol className="list-decimal space-y-3 pl-5 text-ink-700">
           {t.legal.privacyBody.map((p) => <li key={p}>{p}</li>)}
         </ol>
       </div>

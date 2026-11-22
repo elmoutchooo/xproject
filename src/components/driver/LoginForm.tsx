@@ -2,14 +2,16 @@
 
 import { useActionState } from "react";
 import { driverLogin } from "@/app/driver/actions";
+import { LogoTile } from "@/components/brand/Logo";
 
 export default function DriverLoginForm({ agency }: { agency: string }) {
   const [state, action, pending] = useActionState<{ error?: string; phone?: string }, FormData>(driverLogin, {});
   return (
     <form key={state.error ? `${state.phone}-err` : "form"} action={action} className="card w-full max-w-sm space-y-4 p-8">
+      <LogoTile className="h-14 w-14" />
       <div>
-        <p className="text-sm font-semibold text-brand-700">{agency}</p>
-        <h1 className="text-xl font-extrabold text-slate-900">Espace chauffeurs</h1>
+        <p className="text-sm font-semibold text-coral-600">{agency}</p>
+        <h1 className="text-xl font-extrabold text-ink-900">Espace chauffeurs</h1>
       </div>
       <div>
         <label className="label" htmlFor="phone">Numéro de téléphone</label>

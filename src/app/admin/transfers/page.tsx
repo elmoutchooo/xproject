@@ -27,7 +27,7 @@ export default async function TransfersAdmin() {
   const cols = "grid gap-2 sm:grid-cols-3 lg:grid-cols-[1.2fr_1.2fr_120px_90px_100px_80px_auto] lg:items-center";
   return (
     <Shell title="Transferts aéroport">
-      <div className={`${cols} mb-2 hidden px-4 text-xs font-semibold uppercase tracking-wide text-slate-500 lg:grid`}>
+      <div className={`${cols} mb-2 hidden px-4 text-xs font-semibold uppercase tracking-wide text-ink-500 lg:grid`}>
         <span>Aéroport</span><span>Destination</span><span>Véhicule</span><span>Pass. max</span><span>Prix (MAD)</span><span>Actif</span><span />
       </div>
       <div className="space-y-2">

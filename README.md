@@ -1,4 +1,4 @@
-# Atlas Transport – Site de réservation
+# CS Tours – Site de réservation
 
 Site de réservation pour une agence de transport au Maroc : **bus entre les villes**, **transferts aéroport**, **navettes touristiques** et **excursions à la journée** (ex. Marrakech → Essaouira).
 
@@ -41,7 +41,8 @@ Après une mise à jour du code (`git pull`), lancez `npm install` puis `npm run
 |---|---|
 | Nom, téléphone, WhatsApp, email, adresse, RIB | `src/config/agency.ts` |
 | Textes du site (4 langues) | `src/dictionaries/*.ts` |
-| Couleurs | `tailwind.config.ts` |
+| Couleurs (charte CS Tours : corail, blanc, brun encre) | `tailwind.config.ts` |
+| Logo (SVG) | `src/components/brand/Logo.tsx` et `src/app/icon.svg` |
 | Lignes de bus, transferts, excursions, prix | Dashboard `/admin` |
 
 ## SEO

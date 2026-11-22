@@ -29,9 +29,9 @@ export default async function ContactPage({ params }: P) {
         <div className="grid gap-4 sm:grid-cols-2">
           {items.map((i) => (
             <div key={i.label} className="card p-5">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-700">{i.icon}</span>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">{i.label}</p>
-              {i.href ? <a href={i.href} className="mt-1 block font-semibold text-slate-900 hover:text-brand-700">{i.value}</a> : <p className="mt-1 font-semibold text-slate-900">{i.value}</p>}
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-coral-50 text-coral-600">{i.icon}</span>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-ink-500">{i.label}</p>
+              {i.href ? <a href={i.href} className="mt-1 block font-semibold text-ink-900 hover:text-coral-600">{i.value}</a> : <p className="mt-1 font-semibold text-ink-900">{i.value}</p>}
             </div>
           ))}
           <a href={`https://wa.me/${AGENCY.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn bg-[#25D366] py-4 text-white hover:brightness-95 sm:col-span-2">

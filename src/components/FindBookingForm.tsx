@@ -11,7 +11,7 @@ export default function FindBookingForm({ locale, t, emailLabel }: { locale: Loc
       <input type="hidden" name="locale" value={locale} />
       <div>
         <label className="label" htmlFor="reference">{t.ref}</label>
-        <input id="reference" name="reference" placeholder="AT-XXXXXX" className="input font-mono uppercase" required />
+        <input id="reference" name="reference" placeholder="CS-XXXXXX" className="input font-mono uppercase" required />
       </div>
       <div>
         <label className="label" htmlFor="email">{emailLabel}</label>
